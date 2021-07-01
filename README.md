@@ -24,18 +24,18 @@ This release has been tested with the following:
 
 ####PRE-INSTALLATION####
 
-From your existing ULIMS installation do the following:
+From your existing LIMS installation do the following:
 - Secure a copy of the `lims/protected/config` and `lims/images` directory. 
   You will need information from the files in that directory. 
     
-- Export(backup) the databases (ulimsaccounting, ulimscashiering, ulimslab, ulimsportal, phaddress).
+- Export(backup) the databases (limsaccounting, limscashiering, limslab, limsportal, phaddress).
     
 (Skip this if you are installing from scratch)
 
 
 ####INSTALLATION####
 
-1. Download or clone ulims from this repository.
+1. Download or clone lims from this repository.
 2. Extract the release file to a Web-accessible directory:
     ```    
     X:/xampp/htdocs for xampp on windows environment
@@ -44,7 +44,7 @@ From your existing ULIMS installation do the following:
 
 3. LIMS Configurations
 
-    - Database credentials for ULIMS have been moved to `/lims/protected/config/db.php` which resides on the same directory as the main.php file. In this way we will always have the same `main.php` file. 
+    - Database credentials for LIMS have been moved to `/lims/protected/config/db.php` which resides on the same directory as the main.php file. In this way we will always have the same `main.php` file. 
 
     - Update the usernames and passwords for the different databases specified in the db.php file.
     
@@ -64,15 +64,15 @@ From your existing ULIMS installation do the following:
     
     ##### B. Migrating from Existing Installation #####
 
-    - Create and import the database (ulimsaccounting, ulimscashiering, ulimslab, ulimsportal, phaddress) you obtained from the Pre-Installation instruction.
+    - Create and import the database (limsaccounting, limscashiering, limslab, limsportal, phaddress) you obtained from the Pre-Installation instruction.
         
-    - Check the structure of the `imslab.request` table. The datatype for field `requestDate` should be 'date' and there should be a field `create_time` with a 'TIMESTAMP' datatype. 
+    - Check the structure of the `limslab.request` table. The datatype for field `requestDate` should be 'date' and there should be a field `create_time` with a 'TIMESTAMP' datatype. 
             
     - If not, execute the following sql commands separately.
         ```
         ALTER TABLE `request` CHANGE `requestDate` `requestDate` DATE NOT NULL
         ALTER TABLE `request` ADD `create_time` TIMESTAMP
-        UPDATE `ulimslab`.`request` SET `create_time` = `requestDate`
+        UPDATE `limslab`.`request` SET `create_time` = `requestDate`
         ALTER TABLE `request` CHANGE `create_time` `create_time` TIMESTAMP NOT NULL
         ALTER TABLE `request` CHANGE `create_time` `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
         ```
@@ -85,7 +85,7 @@ From your existing ULIMS installation do the following:
         TRUNCATE TABLE `AuthItem`
         TRUNCATE TABLE `AuthItemChild`
         ```        
-    Import the `AuthItem.sql` and `AuthItemChild.sql` from `lims/protected/data` directory to the respective tables in ulimsportal database.
+    Import the `AuthItem.sql` and `AuthItemChild.sql` from `lims/protected/data` directory to the respective tables in limsportal database.
     
 
 5.  File/Folder Permissions (for linux installation)
@@ -93,14 +93,14 @@ From your existing ULIMS installation do the following:
     - Grant read/write permissions to several files/folders by running the following commands:
  
         ```
-        sudo chmod -R 777 ulims/assets
-        sudo chmod -R 777 ulims/protected/runtime
-        sudo chmod 777 ulims/config/site-settings.ini
-        sudo chmod 777 ulims/config/form-settings.ini
-        sudo chmod 777 ulims/config/api-settings.ini
+        sudo chmod -R 777 lims/assets
+        sudo chmod -R 777 lims/protected/runtime
+        sudo chmod 777 lims/config/site-settings.ini
+        sudo chmod 777 lims/config/form-settings.ini
+        sudo chmod 777 lims/config/api-settings.ini
         ```
         
-        create the folder `ulims/assets` if does not exist.
+        create the folder `lims/assets` if does not exist.
     
     - The following tables are case-sensitive:
     
