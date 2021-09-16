@@ -290,11 +290,7 @@ class hydrostaticworksheet extends TCPDF {
                 <td></td>
                 <td class="underline"></td>
             </tr>
-            <tr>
-                <td width="160">Date:______________________</td>
-                <td width="140"></td>
-                <td width="160">Date:______________________</td>
-            </tr>
+            
         </table>
         ';
         $this->SetFont('helvetica','',10);
@@ -304,8 +300,8 @@ class hydrostaticworksheet extends TCPDF {
     public function Footer() {
 
         $footDetails = array(
-            'revCode'=>'Rev. 0',
-            'effectDate'=>'Effective Date: 04 May 2020',
+            'revCode'=>'Rev. 1',
+            'effectDate'=>'Effective Date: 16 September 2021',
         );
         // MultiCell($w, $h, $txt, $border=0, $align='J', $fill=0, $ln=1, $x='', $y='', $reseth=true, $stretch=0, $ishtml=false, $autopadding=true, $maxh=0)
 
