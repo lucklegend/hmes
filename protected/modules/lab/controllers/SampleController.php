@@ -6,7 +6,7 @@ class SampleController extends Controller
 	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
 	 * using two-column layout. See 'protected/views/layouts/column2.php'.
 	 */
-	public $layout='//layouts/column2';
+	public $layout = '//layouts/column2';
 
 	/**
 	 * @return array action filters
@@ -19,7 +19,7 @@ class SampleController extends Controller
 		);*/
 		return array('rights');
 	}
-		
+
 	/**
 	 * Specifies the access control rules.
 	 * This method is used by the 'accessControl' filter.
@@ -28,20 +28,24 @@ class SampleController extends Controller
 	public function accessRules()
 	{
 		return array(
-			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view'),
-				'users'=>array('*'),
+			array(
+				'allow',  // allow all users to perform 'index' and 'view' actions
+				'actions' => array('index', 'view'),
+				'users' => array('*'),
 			),
-			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update'),
-				'users'=>array('@'),
+			array(
+				'allow', // allow authenticated user to perform 'create' and 'update' actions
+				'actions' => array('create', 'update'),
+				'users' => array('@'),
 			),
-			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete'),
-				'users'=>array('admin'),
+			array(
+				'allow', // allow admin user to perform 'admin' and 'delete' actions
+				'actions' => array('admin', 'delete'),
+				'users' => array('admin'),
 			),
-			array('deny',  // deny all users
-				'users'=>array('*'),
+			array(
+				'deny',  // deny all users
+				'users' => array('*'),
 			),
 		);
 	}
@@ -83,11 +87,11 @@ class SampleController extends Controller
 	 */
 	public function actionView($id)
 	{
-		if(isset($_GET['id'])){
+		if (isset($_GET['id'])) {
 			$id = $_GET['id'];
-		}	
-		$this->render('view',array(
-			'model'=>$this->loadModel($id),
+		}
+		$this->render('view', array(
+			'model' => $this->loadModel($id),
 		));
 	}
 
@@ -97,24 +101,21 @@ class SampleController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$model=new Sample;
+		$model = new Sample;
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
-		
-		if(isset($_GET['id']))
-		{
-			$requestId = $_GET['id'];
-			$request = Request::model()->findByPk($requestId); 
-		}	
 
-		if(isset($_POST['Sample']))
-		{
-			
-			$model->attributes=$_POST['Sample'];
-			
-			if(isset($_POST['saveAsTemplate']))
-			{
+		if (isset($_GET['id'])) {
+			$requestId = $_GET['id'];
+			$request = Request::model()->findByPk($requestId);
+		}
+
+		if (isset($_POST['Sample'])) {
+
+			$model->attributes = $_POST['Sample'];
+
+			if (isset($_POST['saveAsTemplate'])) {
 				$sampleName = new Samplename;
 				$sampleName->name = $model->sampleName;
 				$sampleName->remarks = $model->remarks;
@@ -125,39 +126,67 @@ class SampleController extends Controller
 				$sampleName->brand = $model->brand;
 				$sampleName->capacity_range = $model->capacity_range;
 				$sampleName->resolution = $model->resolution;
-				
+
 				$sampleName->save();
-				
 			}
-			
+
+
 			$model->request_id = $requestId;
 			$model->rstl_id = Yii::app()->user->rstlId;
-			
-			if($model->save()){
+
+			if ($model->save()) {
 				//$this->redirect(array('view','id'=>$model->id));
-				if (Yii::app()->request->isAjaxRequest)
-                {
-                    echo CJSON::encode(array(
-                        'status'=>'success', 
-                        'div'=>"Sample successfully added"
-                        ));
-                    exit;               
-                }
-                else
-                    $this->redirect(array('view','id'=>$model->id));
+				$html = "";
+				$request = Request::model()->findByPk($requestId);
+				if ($request->sampleCount && $request->anals) {
+					foreach ($request->samps as $sample) {
+						$labCode = Lab::model()->findByPk($request->labId);
+
+						$year = date('Y', strtotime($request->requestDate));
+
+						$code = new Samplecode;
+						//$sampleCode = $code->generateSampleCode($labCode, $year);
+						$tsrNum = $request->requestRefNum;
+						$sampleCode = $code->generateSampleCode2(
+							$labCode,
+							$year,
+							$tsrNum
+						);
+						$number = explode('-', $sampleCode);
+						$this->appendSampleCode($request, $number[1]);
+
+						Sample::model()->updateByPk($sample->id, array('sampleCode' => $sampleCode));
+
+						foreach ($sample->analysesForGeneration as $analysis) {
+							Analysis::model()->updateByPk($analysis->id, array('sampleCode' => $sampleCode));
+						}
+
+						$sampleNew = Sample::model()->findByPk($sample->id);
+						$html .= '<p>' . $sampleNew->sampleName . ' : ' . $sampleNew->sampleCode . '</p><br/>';
+					}
+				}
+
+				if (Yii::app()->request->isAjaxRequest) {
+					echo CJSON::encode(array(
+						'status' => 'success',
+						'div' => "Sample successfully added"
+					));
+					exit;
+				} else
+					$this->redirect(array('view', 'id' => $model->id));
 			}
 		}
-		
-		if (Yii::app()->request->isAjaxRequest)
-        {
-            echo CJSON::encode(array(
-                'status'=>'failure',
-                'div'=>$this->renderPartial('_form', array('model'=>$model, 'requestId'=>$requestId, 'request'=>$request) ,true , true)));
-            exit;               
-        }else{
-            $this->render('create',array('model'=>$model,));
-        }
-        
+
+		if (Yii::app()->request->isAjaxRequest) {
+			echo CJSON::encode(array(
+				'status' => 'failure',
+				'div' => $this->renderPartial('_form', array('model' => $model, 'requestId' => $requestId, 'request' => $request), true, true)
+			));
+			exit;
+		} else {
+			$this->render('create', array('model' => $model,));
+		}
+
 		//$this->render('create',array('model'=>$model,));
 	}
 	public function actionCreatebulk()
@@ -165,18 +194,15 @@ class SampleController extends Controller
 		$model = new Sample;
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
-		
-		if(isset($_GET['id']))
-		{
-			$requestId = $_GET['id'];
-			$request = Request::model()->findByPk($requestId); 
-		}	
 
-		if(isset($_POST['Sample']))
-		{
-			
-			if(isset($_POST['saveAsTemplate']))
-			{
+		if (isset($_GET['id'])) {
+			$requestId = $_GET['id'];
+			$request = Request::model()->findByPk($requestId);
+		}
+
+		if (isset($_POST['Sample'])) {
+
+			if (isset($_POST['saveAsTemplate'])) {
 				$sampleName = new Samplename;
 				$sampleName->name = $model->sampleName;
 				$sampleName->remarks = $model->remarks;
@@ -189,11 +215,11 @@ class SampleController extends Controller
 
 				$sampleName->save();
 			}
-			if(isset($_POST['quantity'])){
-				if($_POST['quantity'] > 1){
+			if (isset($_POST['quantity'])) {
+				if ($_POST['quantity'] > 1) {
 					$max = $_POST['quantity'];
-					
-					for($i=0; $i<$max; $i++){
+
+					for ($i = 0; $i < $max; $i++) {
 						$model = new Sample;
 						$model->sampleName = $_POST['sampleName'];
 						$model->samplingDate = $_POST['samplingDate'];
@@ -206,50 +232,47 @@ class SampleController extends Controller
 						$model->request_id = $requestId;
 						$model->rstl_id = Yii::app()->user->rstlId;
 						$model->isNewRecord = true;
-						$model->attributes=$_POST['Sample'];
+						$model->attributes = $_POST['Sample'];
 						$model->save();
 					}
-				}else{
+				} else {
 					$model = new Sample;
-					$model->attributes=$_POST['Sample'];
+					$model->attributes = $_POST['Sample'];
 					$model->request_id = $requestId;
 					$model->rstl_id = Yii::app()->user->rstlId;
 				}
-
-			}else{
+			} else {
 				$model = new Sample;
-				$model->attributes=$_POST['Sample'];
+				$model->attributes = $_POST['Sample'];
 				$model->request_id = $requestId;
-				$model->rstl_id = Yii::app()->user->rstlId;	
+				$model->rstl_id = Yii::app()->user->rstlId;
 			}
-			
-			
 
-			if($model->save()){
+
+
+			if ($model->save()) {
 				//$this->redirect(array('view','id'=>$model->id));
-				if (Yii::app()->request->isAjaxRequest)
-                {
-                    echo CJSON::encode(array(
-                        'status'=>'success', 
-                        'div'=>"Sample successfully added"
-                        ));
-                    exit;               
-                }
-                else
-                    $this->redirect(array('view','id'=>$model->id));
+				if (Yii::app()->request->isAjaxRequest) {
+					echo CJSON::encode(array(
+						'status' => 'success',
+						'div' => "Sample successfully added"
+					));
+					exit;
+				} else
+					$this->redirect(array('view', 'id' => $model->id));
 			}
 		}
-		
-		if (Yii::app()->request->isAjaxRequest)
-        {
-            echo CJSON::encode(array(
-                'status'=>'failure',
-                'div'=>$this->renderPartial('_formbulk', array('model'=>$model, 'requestId'=>$requestId, 'request'=>$request) ,true , true)));
-            exit;               
-        }else{
-            $this->render('createbulk',array('model'=>$model,));
-        }
-        
+
+		if (Yii::app()->request->isAjaxRequest) {
+			echo CJSON::encode(array(
+				'status' => 'failure',
+				'div' => $this->renderPartial('_formbulk', array('model' => $model, 'requestId' => $requestId, 'request' => $request), true, true)
+			));
+			exit;
+		} else {
+			$this->render('createbulk', array('model' => $model,));
+		}
+
 		//$this->render('create',array('model'=>$model,));
 	}
 	/**
@@ -258,54 +281,52 @@ class SampleController extends Controller
 	 * @param integer $id the ID of the model to be updated
 	 */
 
-	public function actionUpdate($id=NULL)
+	public function actionUpdate($id = NULL)
 	{
-		if(isset($_POST['Sample']['id'])){
-			$id=$_POST['Sample']['id'];
-		}else if(isset($_GET['id'])){
-			$id=$_GET['id'];
-		}else{
-			if(isset($_POST['id']))
-			$id=$_POST['id'];
+		if (isset($_POST['Sample']['id'])) {
+			$id = $_POST['Sample']['id'];
+		} else if (isset($_GET['id'])) {
+			$id = $_GET['id'];
+		} else {
+			if (isset($_POST['id']))
+				$id = $_POST['id'];
 		}
-		
-		$model=$this->loadModel($id);
 
-		$requestId=$model->request_id;
-		
+		$model = $this->loadModel($id);
+
+		$requestId = $model->request_id;
+
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['Sample']))
-		{
-			$model->attributes=$_POST['Sample'];
+		if (isset($_POST['Sample'])) {
+			$model->attributes = $_POST['Sample'];
 			$model->request_id = $requestId;
-			if($model->save()){
-				if (Yii::app()->request->isAjaxRequest)
-				{
+			if ($model->save()) {
+				if (Yii::app()->request->isAjaxRequest) {
 					echo CJSON::encode(array(
-                        'status'=>'success', 
-                        'div'=>"Sample updated"
-                        ));
-                      
-                    exit;    
-				}
-				else
-					$this->redirect(array('view','id'=>$model->id));
+						'status' => 'success',
+						'div' => "Sample updated"
+					));
+
+					exit;
+				} else
+					$this->redirect(array('view', 'id' => $model->id));
 			}
 		}
 
-		if (Yii::app()->request->isAjaxRequest)
-        {
+		if (Yii::app()->request->isAjaxRequest) {
 			echo CJSON::encode(array(
-                'status'=>'failure',
-                'div'=>$this->renderPartial('_form', array('model'=>$model,'requestId'=>$requestId,
-				), true, true)));
-			
-            exit;               
-        }else{
-			$this->render('update',array('model'=>$model,'requestId'=>$requestId));
-        }
+				'status' => 'failure',
+				'div' => $this->renderPartial('_form', array(
+					'model' => $model, 'requestId' => $requestId,
+				), true, true)
+			));
+
+			exit;
+		} else {
+			$this->render('update', array('model' => $model, 'requestId' => $requestId));
+		}
 	}
 
 	/**
@@ -318,24 +339,27 @@ class SampleController extends Controller
 		$this->loadModel($id)->delete();
 
 		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
-		if(!isset($_GET['ajax']))
+		if (!isset($_GET['ajax']))
 			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
 	}
 
 	public function actionCancel($id)
 	{
-		Sample::model()->updateByPk($id, 
-			array('cancelled'=>1,
-			));
+		Sample::model()->updateByPk(
+			$id,
+			array(
+				'cancelled' => 1,
+			)
+		);
 	}
 	/**
 	 * Lists all models.
 	 */
 	public function actionIndex()
 	{
-		$dataProvider=new CActiveDataProvider('Sample');
-		$this->render('index',array(
-			'dataProvider'=>$dataProvider,
+		$dataProvider = new CActiveDataProvider('Sample');
+		$this->render('index', array(
+			'dataProvider' => $dataProvider,
 		));
 	}
 
@@ -344,13 +368,13 @@ class SampleController extends Controller
 	 */
 	public function actionAdmin()
 	{
-		$model=new Sample('search');
+		$model = new Sample('search');
 		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['Sample']))
-			$model->attributes=$_GET['Sample'];
+		if (isset($_GET['Sample']))
+			$model->attributes = $_GET['Sample'];
 
-		$this->render('admin',array(
-			'model'=>$model,
+		$this->render('admin', array(
+			'model' => $model,
 		));
 	}
 
@@ -363,9 +387,9 @@ class SampleController extends Controller
 	 */
 	public function loadModel($id)
 	{
-		$model=Sample::model()->findByPk($id);
-		if($model===null)
-			throw new CHttpException(404,'The requested page does not exist.');
+		$model = Sample::model()->findByPk($id);
+		if ($model === null)
+			throw new CHttpException(404, 'The requested page does not exist.');
 		return $model;
 	}
 
@@ -375,108 +399,96 @@ class SampleController extends Controller
 	 */
 	protected function performAjaxValidation($model)
 	{
-		if(isset($_POST['ajax']) && $_POST['ajax']==='sample-form')
-		{
+		if (isset($_POST['ajax']) && $_POST['ajax'] === 'sample-form') {
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
 		}
 	}
-	
+
 	public function actionGenerateSampleCode($id)
 	{
 		$html = "";
 		$modelRequest = Request::model()->findByPk($id);
-		if($modelRequest->sampleCount && $modelRequest->anals){
-			foreach($modelRequest->samps as $sample)
-			{
+		if ($modelRequest->sampleCount && $modelRequest->anals) {
+			foreach ($modelRequest->samps as $sample) {
 				$labCode = Lab::model()->findByPk($modelRequest->labId);
-				
+
 				$year = date('Y', strtotime($modelRequest->requestDate));
-				
-				$code=new Samplecode;
+
+				$code = new Samplecode;
 				//$sampleCode = $code->generateSampleCode($labCode, $year);
 				$tsrNum = $modelRequest->requestRefNum;
 				$sampleCode = $code->generateSampleCode2($labCode, $year, $tsrNum);
 				$number = explode('-', $sampleCode);
 				$this->appendSampleCode($modelRequest, $number[1]);
-				
-				Sample::model()->updateByPk($sample->id, array('sampleCode'=>$sampleCode));
-				
-				foreach($sample->analysesForGeneration as $analysis)
-				{
-					Analysis::model()->updateByPk($analysis->id, array('sampleCode'=>$sampleCode));
+
+				Sample::model()->updateByPk($sample->id, array('sampleCode' => $sampleCode));
+
+				foreach ($sample->analysesForGeneration as $analysis) {
+					Analysis::model()->updateByPk($analysis->id, array('sampleCode' => $sampleCode));
 				}
-				
+
 				$sampleNew = Sample::model()->findByPk($sample->id);
-				$html .= '<p>'.$sampleNew->sampleName.' : '.$sampleNew->sampleCode.'</p><br/>';
+				$html .= '<p>' . $sampleNew->sampleName . ' : ' . $sampleNew->sampleCode . '</p><br/>';
 			}
 			$this->updateGeneratedRequest($modelRequest);
 			echo CJSON::encode(array(
-                  	'status'=>'success', 
-                    'div'=>$html.'<br \> Successfully Generated.'
-                    ));
-			exit; 
-		}else{
+				'status' => 'success',
+				'div' => $html . '<br \> Successfully Generated.'
+			));
+			exit;
+		} else {
 			echo CJSON::encode(array(
-                  	'status'=>'failure', 
-                    'div'=>'<div style="text-align:center;" class="alert alert-error"><i class="icon icon-warning-sign"></i><font style="font-size:14px;"> System Warning. </font><br \><br \><div>Cannot generate sample code. <br \>Please add at least one(1) sample and analysis.</div></div>'
-                    ));
-			exit; 			
+				'status' => 'failure',
+				'div' => '<div style="text-align:center;" class="alert alert-error"><i class="icon icon-warning-sign"></i><font style="font-size:14px;"> System Warning. </font><br \><br \><div>Cannot generate sample code. <br \>Please add at least one(1) sample and analysis.</div></div>'
+			));
+			exit;
 		}
 	}
-    public function actionPrintworksheet($id)
+	public function actionPrintworksheet($id)
 	{
 		$sample = Sample::model()->findByPk($id);
 		$request = Request::model()->findByPk($sample->request_id);
-		
+
 		$codes = explode('-', $sample->sampleCode);
-        $sampleCode = $sample->requestId.'-'.substr($codes[1], 1);
+		$sampleCode = $sample->requestId . '-' . substr($codes[1], 1);
 
 		foreach ($sample->analyses as $analysis) {
 			$sampleWorksheet = $analysis->worksheet;
 		}
 
-		if($sampleWorksheet == ''){
-			return $this->redirect(array('request/view', 'id'=>$sample->request_id));
+		if ($sampleWorksheet == '') {
+			return $this->redirect(array('request/view', 'id' => $sample->request_id));
 		}
 
-		if($sampleWorksheet == 'balanceworksheet'){
+		if ($sampleWorksheet == 'balanceworksheet') {
 			$pdf = Yii::createComponent('application.extensions.tcpdf.worksheet.balanceworksheet', 'P', 'cm', 'A4', true, 'UTF-8');
 			$pdf = new balanceworksheet(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
-			
-		}elseif($sampleWorksheet == 'hydrostaticworksheet'){
+		} elseif ($sampleWorksheet == 'hydrostaticworksheet') {
 			$pdf = Yii::createComponent('application.extensions.tcpdf.worksheet.hydrostaticworksheet', 'P', 'cm', 'A4', true, 'UTF-8');
 			$pdf = new hydrostaticworksheet(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
-			
-		}elseif($sampleWorksheet == 'pressureworksheet'){
+		} elseif ($sampleWorksheet == 'pressureworksheet') {
 			$pdf = Yii::createComponent('application.extensions.tcpdf.worksheet.pressureworksheet', 'P', 'cm', 'A4', true, 'UTF-8');
 			$pdf = new pressureworksheet(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
-		
-		}elseif($sampleWorksheet == 'reliefvalveworksheet'){
+		} elseif ($sampleWorksheet == 'reliefvalveworksheet') {
 			$pdf = Yii::createComponent('application.extensions.tcpdf.worksheet.reliefvalveworksheet', 'P', 'cm', 'A4', true, 'UTF-8');
 			$pdf = new reliefvalveworksheet(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
-
-		}elseif($sampleWorksheet == 'loadworksheet'){
+		} elseif ($sampleWorksheet == 'loadworksheet') {
 			$pdf = Yii::createComponent('application.extensions.tcpdf.worksheet.loadworksheet', 'P', 'cm', 'A4', true, 'UTF-8');
 			$pdf = new loadworksheet(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
-		
-		}elseif($sampleWorksheet == 'pneumaticworksheet'){
+		} elseif ($sampleWorksheet == 'pneumaticworksheet') {
 			$pdf = Yii::createComponent('application.extensions.tcpdf.worksheet.pneumaticworksheet', 'P', 'cm', 'A4', true, 'UTF-8');
 			$pdf = new pneumaticworksheet(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
-		
-		}elseif($sampleWorksheet == 'stopwatchworksheet'){
+		} elseif ($sampleWorksheet == 'stopwatchworksheet') {
 			$pdf = Yii::createComponent('application.extensions.tcpdf.worksheet.stopwatchworksheet', 'P', 'cm', 'A4', true, 'UTF-8');
 			$pdf = new stopwatchworksheet(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
-		
-		}elseif($sampleWorksheet == 'textiletapeworksheet'){
+		} elseif ($sampleWorksheet == 'textiletapeworksheet') {
 			$pdf = Yii::createComponent('application.extensions.tcpdf.worksheet.textiletapeworksheet', 'P', 'cm', 'A4', true, 'UTF-8');
 			$pdf = new textiletapeworksheet(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
-		
-		}elseif($sampleWorksheet == 'tempcontrollerworksheet'){
+		} elseif ($sampleWorksheet == 'tempcontrollerworksheet') {
 			$pdf = Yii::createComponent('application.extensions.tcpdf.worksheet.tempcontrollerworksheet', 'P', 'cm', 'A4', true, 'UTF-8');
 			$pdf = new tempcontrollerworksheet(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
-		
-		}else{
+		} else {
 			$pdf = Yii::createComponent('application.extensions.tcpdf.worksheet.requestPdf', 'P', 'cm', 'A4', true, 'UTF-8');
 			$pdf = new requestPdf(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 		}
@@ -484,92 +496,91 @@ class SampleController extends Controller
 		//$pdf = new requestPdf(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
 
-        spl_autoload_register(array('YiiBase','autoload'));
- 
- 		$pdf->setRequest($request);
- 		$pdf->setSample($sample);
-        $pdf->SetCreator(PDF_CREATOR);  
-        $pdf->SetTitle($sampleCode);               
-        $pdf->SetMargins(0,28.15,0);
-        $pdf->SetAutoPageBreak(TRUE, 10);
-        
-        $pdf->AddPage();
- 
-        $pdf->printRows();
-        
-        // reset pointer to the last page
-        $pdf->lastPage();
- 
-        //Close and output PDF document
-        $pdf->Output($sampleCode.'.pdf', 'I');
-        //Yii::app()->end();
-        
+		spl_autoload_register(array('YiiBase', 'autoload'));
+
+		$pdf->setRequest($request);
+		$pdf->setSample($sample);
+		$pdf->SetCreator(PDF_CREATOR);
+		$pdf->SetTitle($sampleCode);
+		$pdf->SetMargins(0, 28.15, 0);
+		$pdf->SetAutoPageBreak(TRUE, 10);
+
+		$pdf->AddPage();
+
+		$pdf->printRows();
+
+		// reset pointer to the last page
+		$pdf->lastPage();
+
+		//Close and output PDF document
+		$pdf->Output($sampleCode . '.pdf', 'I');
+		//Yii::app()->end();
+
 	}
-    public function actionGenerateSampleCodeReferral()
+	public function actionGenerateSampleCodeReferral()
 	{
 		$html = "<pre>";
 		//$modelRequest = Request::model()->findByPk($id);
-        $url = Yii::app()->Controller->getApiUrl().'/lab/api/view/model/referrals/id/'.$_GET["id"];
-		
-        $response = Yii::app()->curl->get($url);
-        
+		$url = Yii::app()->Controller->getApiUrl() . '/lab/api/view/model/referrals/id/' . $_GET["id"];
+
+		$response = Yii::app()->curl->get($url);
+
 		//Decode
 		$referral = json_decode($response, true);
-        
+
 		//Decode
 		//$referral = json_decode($response, true);
-        //$html .= $url.$_GET['test'];
-        
-        $labCode = Lab::model()->findByPk($referral['lab_id']);
-        $year = date('Y', strtotime($referral['referralDate']));
-        
-        
-        foreach($referral['samples'] as $sample)
-        {
-            $code = new Samplecode;
-            $sampleCode = $code->generateSampleCode($labCode, $year);
-            $number = explode('-', $sampleCode);
+		//$html .= $url.$_GET['test'];
 
-            // Append samplecode
-            $samplecode = New Samplecode;
-            $samplecode->rstl_id = Yii::app()->Controller->getRstlId();
-            $samplecode->requestId = $referral['referralCode'];
-            $samplecode->labId = $referral['lab_id'];
-            $samplecode->number = $number[1];
-            $samplecode->year = date('Y', strtotime($referral['referralDate']));
-            $samplecode->cancelled = 0;
-            
-            //Update Sample on Referral
-            if($samplecode->save()){
-                $url = Yii::app()->Controller->getApiUrl().'/lab/api/update/model/samples/id/'.$sample["id"];
-                
-                $data = array('sampleCode'=>$labCode->labCode.'-'.$number[1]);
-                
-                $ch = curl_init($url);
+		$labCode = Lab::model()->findByPk($referral['lab_id']);
+		$year = date('Y', strtotime($referral['referralDate']));
 
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
-                curl_setopt($ch, CURLOPT_POSTFIELDS,http_build_query($data));
 
-                $response = curl_exec($ch);
-                if(!$response) {
-                    return false;
-                }
-            }
-            $html .= $labCode->labCode.'-'.$number[1].'<br/>';
-        }
+		foreach ($referral['samples'] as $sample) {
+			$code = new Samplecode;
+			$sampleCode = $code->generateSampleCode($labCode, $year);
+			$number = explode('-', $sampleCode);
 
-        echo CJSON::encode(array(
-                  	'status'=>'success', 
-                    //'div'=>$html.'<br \> Successfully Generated.'
-                    'div'=>$html.'</pre>'
-                    ));
-			exit;  
+			// Append samplecode
+			$samplecode = new Samplecode;
+			$samplecode->rstl_id = Yii::app()->Controller->getRstlId();
+			$samplecode->requestId = $referral['referralCode'];
+			$samplecode->labId = $referral['lab_id'];
+			$samplecode->number = $number[1];
+			$samplecode->year = date('Y', strtotime($referral['referralDate']));
+			$samplecode->cancelled = 0;
+
+			//Update Sample on Referral
+			if ($samplecode->save()) {
+				$url = Yii::app()->Controller->getApiUrl() . '/lab/api/update/model/samples/id/' . $sample["id"];
+
+				$data = array('sampleCode' => $labCode->labCode . '-' . $number[1]);
+
+				$ch = curl_init($url);
+
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+				curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+				curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+
+				$response = curl_exec($ch);
+				if (!$response) {
+					return false;
+				}
+			}
+			$html .= $labCode->labCode . '-' . $number[1] . '<br/>';
+		}
+
+		echo CJSON::encode(array(
+			'status' => 'success',
+			//'div'=>$html.'<br \> Successfully Generated.'
+			'div' => $html . '</pre>'
+		));
+		exit;
 	}
-	
+
 	function appendSampleCode($modelRequest, $count)
 	{
-		$sampleCode = New Samplecode;
+		$sampleCode = new Samplecode;
 		$sampleCode->rstl_id = $modelRequest->rstl_id;
 		$sampleCode->requestId = $modelRequest->requestRefNum;
 		$sampleCode->labId = $modelRequest->labId;
@@ -578,7 +589,7 @@ class SampleController extends Controller
 		$sampleCode->cancelled = 0;
 		$sampleCode->save();
 	}
-	
+
 	function updateGeneratedRequest($modelRequest)
 	{
 		/*$currentRequest = Requestcode::model()->find(array(
@@ -591,90 +602,91 @@ class SampleController extends Controller
 			'params' => array(':rstl_id' => Yii::app()->Controller->getRstlId(), ':labId' => $modelRequest->labId)
 		));*/
 		$currentRequest = explode('-', $modelRequest->requestRefNum);
-        
-		$generatedRequest = New Generatedrequest;
+
+		$generatedRequest = new Generatedrequest;
 		$generatedRequest->rstl_id = $modelRequest->rstl_id;
 		$generatedRequest->request_id = $modelRequest->id;
 		$generatedRequest->labId = $modelRequest->labId;
 		$generatedRequest->year = date('Y', strtotime($modelRequest->requestDate));
 		//$generatedRequest->number = isset($currentRequest[2]) ? $currentRequest[2] : $currentRequest(2);
-        $generatedRequest->number = $currentRequest[2];
+		$generatedRequest->number = $currentRequest[2];
 		$generatedRequest->save();
 	}
 
-	function addZeros($count){
-		if($count < 10)
-			return '000'.$count;
+	function addZeros($count)
+	{
+		if ($count < 10)
+			return '000' . $count;
 		elseif ($count < 100)
-			return '00'.$count;
+			return '00' . $count;
 		elseif ($count < 1000)
-			return '0'.$count;
+			return '0' . $count;
 		elseif ($count >= 1000)
 			return $count;
 	}
-	
+
 	function actionConfirm()
-	{	
-		$model=new User;
-		
-		if(isset($_POST['User']))
-		{
+	{
+		$model = new User;
+
+		if (isset($_POST['User'])) {
 			//$model->attributes=$_POST['User'];
-			
+
 			//$model->sample_id = $sampleId;
-			if(isset($_POST['User']['email'])){
-				if (Yii::app()->request->isAjaxRequest)
-				{
+			if (isset($_POST['User']['email'])) {
+				if (Yii::app()->request->isAjaxRequest) {
 					echo CJSON::encode(array(
-                        'status'=>'success', 
-                        'div'=>"Sample updated"
-                        ));
-                    exit;    
-				}
-				else
-					$this->redirect(array('view','id'=>$model->id));
+						'status' => 'success',
+						'div' => "Sample updated"
+					));
+					exit;
+				} else
+					$this->redirect(array('view', 'id' => $model->id));
 			}
 		}
 
-		if (Yii::app()->request->isAjaxRequest)
-        {
+		if (Yii::app()->request->isAjaxRequest) {
 			echo CJSON::encode(array(
-                'status'=>'failure',
-                'div'=>$this->renderPartial('_confirm', array('model'=>$model), true)));
-            exit;               
-        }else{
-        		
-			$this->render('_confirm',array('model'=>$model));
-        }
+				'status' => 'failure',
+				'div' => $this->renderPartial('_confirm', array('model' => $model), true)
+			));
+			exit;
+		} else {
+
+			$this->render('_confirm', array('model' => $model));
+		}
 	}
-	
-	function actionSearchSample(){
-		
+
+	function actionSearchSample()
+	{
+
 		if (!empty($_GET['term'])) {
 			//$sql = 'SELECT id as id, name as name, description as description, CONCAT(name,": ",description) as label';
 			$sql = 'SELECT id as id, name as name, description as description, name as label';
 			$sql .= ' FROM ulimslab.samplename WHERE name LIKE :qterm';
 			$sql .= ' ORDER BY name ASC';
 			$command = Yii::app()->db->createCommand($sql);
-			$qterm = $_GET['term'].'%';
+			$qterm = $_GET['term'] . '%';
 			$command->bindParam(":qterm", $qterm, PDO::PARAM_STR);
 			$result = $command->queryAll();
 			//echo CJSON::encode($result); exit;
-		  } /*else {
+		} /*else {
 			return false;
 		  }*/
-		  echo CJSON::encode($result);
-		  Yii::app()->end();
+		echo CJSON::encode($result);
+		Yii::app()->end();
 	}
-	
-	function actionGetSamplename($id){
-		$data = Samplename::model()->findByPk($id);			  
+
+	function actionGetSamplename($id)
+	{
+		$data = Samplename::model()->findByPk($id);
 		return $data;
 	}
 
-	function actionGetSampleNameTemplate($name){
+	function actionGetSampleNameTemplate($name)
+	{
 		//$name = $_POST['name'];
-		$sample = Samplename::model()->findByAttributes(array('name'=>$name));
+		$sample = Samplename::model()->findByAttributes(array('name' => $name));
 
 		$data = array(
 			'name' => $sample->name,
@@ -687,7 +699,7 @@ class SampleController extends Controller
 			'capacity_range' => $sample->capacity_range,
 			'resolution' => $sample->resolution
 		);
-		echo CJSON::encode($data); 
+		echo CJSON::encode($data);
 		exit;
 	}
 }
