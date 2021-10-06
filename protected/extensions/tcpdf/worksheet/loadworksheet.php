@@ -204,7 +204,7 @@ class loadworksheet extends TCPDF {
             </tr>
             <tr><td height="10"></td></tr>
             <tr>
-                <td width="540">Visual inspection shows that the general condition and workmanship of the instrument were found __________________________________________________________________________________________________________________</td>
+                <td width="540">Visual inspection shows that the general condition and workmanship of the instrument were found ________________________________________________________________________________________________________________</td>
             </tr>
             <tr><td height="10"></td></tr>
             <tr><td height="10"></td></tr>
@@ -267,8 +267,6 @@ class loadworksheet extends TCPDF {
             <tr><td height="10"></td></tr>
             <tr><td height="10"></td></tr>
             <tr><td height="10"></td></tr>
-            <tr><td height="10"></td></tr>
-            <tr><td height="10"></td></tr>
             <tr>
                 <td>Conducted by: _______________________</td>
             </tr>
@@ -276,8 +274,6 @@ class loadworksheet extends TCPDF {
             <tr>
                 <td>Checked by: &nbsp;&nbsp;&nbsp;_______________________</td>
             </tr>
-            <tr><td height="10"></td></tr>
-            <tr><td height="10"></td></tr>
             <tr><td height="10"></td></tr>
             <tr><td height="10"></td></tr>
         </table>

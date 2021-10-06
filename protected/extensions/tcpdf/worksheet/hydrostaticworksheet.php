@@ -69,90 +69,109 @@ class hydrostaticworksheet extends TCPDF {
         </style>
         <table border="0">
             <tr>
-                <td><b>COMPANY’S INFORMATION:</b></td>
-            </tr>
-            <tr><td height="10"></td></tr>
-            <tr>
-                <td width="110">Sample Code No.</td>
+                <td width="95">Company</td>
                 <td width="10">:</td>
-                <td width="150" class="underline">'.$sampleCode.'</td>
+                <td width="430" class="underline">'.$request->customer->customerName.'</td>
             </tr>
             <tr>
-                <td width="110">Date Received</td>
-                <td width="10">:</td>
-                <td width="150" class="underline">'.$receiveDate.'</td>
-                <td width="110">Date of test conducted</td>
-                <td width="10">:</td>
-                <td width="150" class="underline"></td>
+                <td>Address</td>
+                <td>:</td>
+                <td class="underline">'.$request->customer->completeAddress.'</td>
             </tr>
             <tr>
-                <td width="110">Company Name</td>
-                <td width="10">:</td>
-                <td width="420" class="underline">'.$request->customer->customerName.'</td>
+                <td>Contact Person</td>
+                <td>:</td>
+                <td class="underline">'.$request->customer->head.'</td>
             </tr>
+            ';
+            if($request->customer->email != "" || $request->customer->email != NULL){
+                $contactInformation = $request->contact_number.' / '.$request->customer->email;
+            }else{
+                $contactInformation = $request->contact_number;
+            }
+            $forms .= '
             <tr>
-                <td width="110">Company Address</td>
-                <td width="10">:</td>
-                <td width="420" class="underline">'.$request->customer->completeAddress.'</td>
-            </tr>
-            <tr>
-                <td width="110">Contact Person</td>
-                <td width="10">:</td>
-                <td width="150" class="underline">'.$request->addforcert.'</td>
-                ';
-                if($request->customer->email != "" || $request->customer->email != NULL){
-                    $contactInformation = $request->contact_number.' / '.$request->customer->email;
-                }else{
-                    $contactInformation = $request->contact_number;
-                }
-                $forms .= '
-                <td width="110">Contact Information</td>
-                <td width="10">:</td>
-                <td width="150" class="underline">'.$contactInformation.'</td>
+                <td>Contact Information</td>
+                <td>:</td>
+                <td class="underline">'.$contactInformation.'</td>
             </tr>
         </table>
-        <table>
-            <tr><td height="10"></td></tr>
+        <table border="0">
             <tr><td height="10"></td></tr>
             <tr>
-                <td><b>PRESSURE VESSEL INFORMATION:</b></td>
+                <td width="110">Type of Job</td>
+                <td width="10">:</td>
+                <td width="415">[&nbsp;&nbsp;&nbsp;] Hydrostatic Pressure Testing &nbsp;&nbsp;&nbsp; [&nbsp;&nbsp;&nbsp;] Other ____________________________________ </td>
             </tr>
-            <tr><td height="10"></td></tr>
             <tr>
                 <td width="110">Equipment Description</td>
                 <td width="10">:</td>
                 <td width="150" class="underline">'.$sample->sampleName.'</td>
-                <td width="110">Pressure Vessel No.</td>
-                <td width="10">:</td>
-                <td width="150" class="underline"></td>
+                <td width="115"></td>
+                <td width="10"></td>
+                <td width="145"></td>
             </tr>
             <tr>
-                <td>Capacity: </td>
+                <td>Manufacture/Brand: </td>
                 <td>:</td>
-                <td class="underline">'.$sample->capacity_range.'</td>
-                <td>Ambient Temperature: </td>
+                <td class="underline">'.$sample->brand.'</td>
+                <td>Service Request No.</td>
                 <td>:</td>
-                <td class="underline"></td>
+                <td class="underline">'.$sample->requestId.'</td>
+            </tr>
+            <tr>
+                <td>Model No.</td>
+                <td>:</td>
+                <td class="underline">'.$sample->model_no.'</td>
+                <td>Sample Code No.</td>
+                <td>:</td>
+                <td class="underline">'.$sampleCode.'</td>
             </tr>
             <tr>
                 <td>Serial No.</td>
                 <td>:</td>
                 <td class="underline">'.$sample->serial_no.'</td>
-                <td>Manufacturer: </td>
-                <td>:</td>
-                <td class="underline">'.$sample->brand.'</td>
-            </tr>
-            <tr>
-                <td>Location</td>
+                <td>Ambient Temperature </td>
                 <td>:</td>
                 <td class="underline"></td>
-                <td></td>
-                <td></td>
-                <td></td>
+            </tr>
+            <tr>
+                <td>Capacity</td>
+                <td>:</td>
+                <td class="underline">'.$sample->capacity_range.'</td>
+                <td>Relative Humidity</td>
+                <td>:</td>
+                <td class="underline"></td>
+            </tr>
+            <tr>
+                <td>Pressure Vessel No.</td>
+                <td>:</td>
+                <td class="underline"></td>
+                <td>Date Received</td>
+                <td>:</td>
+                <td class="underline">'.$receiveDate.'</td>
+            </tr>
+            <tr>
+                <td>Location of Testing</td>
+                <td>:</td>
+                <td class="underline"></td>
+                <td>Date of Test Conducted</td>
+                <td>:</td>
+                <td class="underline"></td>
             </tr>
         </table>
         <table border="0">
             <tr><td height="10"></td></tr>
+            <tr>
+                <td><b>TEST METHOD:</b></td>
+            </tr>
+            <tr><td height="10"></td></tr>
+            <tr>
+                <td width="540" style="text-align:justify;">The pressure vessel was tested in accordance with HME-TM-001, “Hydrostatic Pressure Testing of Boilers and Pressure Vessels” based on “The American Society of Mechanical Engineers Boiler and Pressure Vessel Code (ASME BPVC.I-2017)” and DOLE Occupational Safety and Health Standards.
+                </td>
+            </tr>
+        </table>
+        <table border="0">
             <tr><td height="10"></td></tr>
             <tr>
                 <td><b>TEST EQUIPMENT:</b></td>
@@ -174,7 +193,6 @@ class hydrostaticworksheet extends TCPDF {
                 <td>:</td>
                 <td class="underline"></td>
             </tr>
-            <tr><td height="10"></td></tr>
         </table>
         <table border="0">
             <tr><td height="10"></td></tr>
@@ -234,7 +252,6 @@ class hydrostaticworksheet extends TCPDF {
         </table>
         <table border="0">
             <tr><td height="10"></td></tr>
-            <tr><td height="10"></td></tr>
             <tr>
                 <td><b>RESULTS:</b></td>
             </tr>
@@ -250,7 +267,6 @@ class hydrostaticworksheet extends TCPDF {
             </tr>
         </table>
         <table border="0">
-            <tr><td height="10"></td></tr>
             <tr><td height="10"></td></tr>
             <tr>
                 <td><b>NOTES:</b></td>
@@ -280,14 +296,12 @@ class hydrostaticworksheet extends TCPDF {
         <table border="0">
             <tr><td height="10"></td></tr>
             <tr>
-                <td width="150">Tested by:</td>
-                <td width="150"></td>
-                <td width="150">Checked by:</td>
+                <td width="80">Conducted by:</td>
+                <td width="150" class="underline"></td>
             </tr>
             <tr><td height="10"></td></tr>
             <tr>
-                <td class="underline"></td>
-                <td></td>
+                <td >Checked by:</td>
                 <td class="underline"></td>
             </tr>
             
@@ -301,7 +315,7 @@ class hydrostaticworksheet extends TCPDF {
 
         $footDetails = array(
             'revCode'=>'Rev. 1',
-            'effectDate'=>'Effective Date: 16 September 2021',
+            'effectDate'=>'Effective Date: 01 September 2021',
         );
         // MultiCell($w, $h, $txt, $border=0, $align='J', $fill=0, $ln=1, $x='', $y='', $reseth=true, $stretch=0, $ishtml=false, $autopadding=true, $maxh=0)
 

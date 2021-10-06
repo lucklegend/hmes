@@ -1,7 +1,7 @@
 <?php
 require_once(dirname(__FILE__).'/../tcpdf.php');
 
-class balanceworksheet extends TCPDF {
+class storagetankworksheet extends TCPDF {
  
     var $request;
     var $customerId;
@@ -27,8 +27,8 @@ class balanceworksheet extends TCPDF {
         $this->SetAlpha(1);
 
         $headDetails = array(
-            'title'=>'CALIBRATION WORKSHEET FOR BALANCES',
-            'code'=>'HME-CM-001-F01',
+            'title'=>'CALIBRATION WORKSHEET OF LPG STORAGE TANK',
+            'code'=>'HME-CM-501-F01',
         );
         // MultiCell($w, $h, $txt, $border=0, $align='J', $fill=0, $ln=1, $x='', $y='', $reseth=true, $stretch=0, $ishtml=false, $autopadding=true, $maxh=0)
         $this->SetFont('helvetica','B',13);
@@ -105,32 +105,7 @@ class balanceworksheet extends TCPDF {
             <tr>
                 <td width="110">Type of Job</td>
                 <td width="10">:</td>
-                <td width="190">[&nbsp;&nbsp;&nbsp;] Calibration</td>
-                <td width="190">[&nbsp;&nbsp;&nbsp;] Others ___________________ </td>
-            </tr>
-            <tr>
-                <td></td>
-                <td>:</td>
-                <td>[&nbsp;&nbsp;&nbsp;] On-site Calibration</td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>Instrument Description</td>
-                <td>:</td>
-                <td>[&nbsp;&nbsp;&nbsp;] Analytical Balance</td>
-                <td>[&nbsp;&nbsp;&nbsp;] Electronic/Platform Scale</td>
-            </tr>
-            <tr>
-                <td></td>
-                <td>:</td>
-                <td>[&nbsp;&nbsp;&nbsp;] Digital Top Loading Balance</td>
-                <td>[&nbsp;&nbsp;&nbsp;] Weighing Scale</td>
-            </tr>
-            <tr>
-                <td></td>
-                <td>:</td>
-                <td>[&nbsp;&nbsp;&nbsp;] Spring Scale</td>
-                <td>[&nbsp;&nbsp;&nbsp;] Others ___________________ </td>
+                <td width="410">[&nbsp;&nbsp;&nbsp;] Calibration &nbsp;&nbsp; [&nbsp;&nbsp;&nbsp;] Partial &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [&nbsp;&nbsp;&nbsp;] Others ____________________________</td>
             </tr>
         </table>
 

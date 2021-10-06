@@ -488,6 +488,9 @@ class SampleController extends Controller
 		} elseif ($sampleWorksheet == 'tempcontrollerworksheet') {
 			$pdf = Yii::createComponent('application.extensions.tcpdf.worksheet.tempcontrollerworksheet', 'P', 'cm', 'A4', true, 'UTF-8');
 			$pdf = new tempcontrollerworksheet(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+		} elseif ($sampleWorksheet == 'storagetankworksheet') {
+			$pdf = Yii::createComponent('application.extensions.tcpdf.worksheet.storagetankworksheet', 'P', 'cm', 'A4', true, 'UTF-8');
+			$pdf = new storagetankworksheet(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 		} else {
 			$pdf = Yii::createComponent('application.extensions.tcpdf.worksheet.requestPdf', 'P', 'cm', 'A4', true, 'UTF-8');
 			$pdf = new requestPdf(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);

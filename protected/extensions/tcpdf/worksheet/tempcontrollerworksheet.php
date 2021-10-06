@@ -253,7 +253,7 @@ class tempcontrollerworksheet extends TCPDF {
                 <td width="90" class="centerCell border" rowspan="2">Expected Output, ________</td>
                 <td height="15" width="170" class="centerCell border" colspan="3">UIC, ____</td>
                 <td width="70" class="centerCell border" rowspan="2">Average, _______</td>
-                <td width="70" class="centerCell border" rowspan="2">Correction, ________</td>
+                <td width="70" class="centerCell border" rowspan="2">Measurement Deviation, ________</td>
             </tr>
             <tr>
                 <td height="15" class="centerCell border">Trial 1</td>
