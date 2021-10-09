@@ -47,7 +47,7 @@ class storagetankworksheet extends TCPDF {
         $sampleCode = $sample->requestId.'-'.substr($codes[1], 1);
         $receiveDate = date('d F Y', strtotime($request->requestDate));
         
-        $forms = '
+        $style= '
         <style>
           table {
             font-style: arial;
@@ -66,7 +66,13 @@ class storagetankworksheet extends TCPDF {
             padding: 10px;
             margin: 10px;
           }
+          td.centerCell{
+            text-align: center;
+            vertical-align: middle;
+          }
         </style>
+        ';
+        $forms = '
         <table border="0">
             <tr>
                 <td width="95">Company</td>
@@ -105,13 +111,13 @@ class storagetankworksheet extends TCPDF {
             <tr>
                 <td width="110">Type of Job</td>
                 <td width="10">:</td>
-                <td width="410">[&nbsp;&nbsp;&nbsp;] Calibration &nbsp;&nbsp; [&nbsp;&nbsp;&nbsp;] Partial &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [&nbsp;&nbsp;&nbsp;] Others ____________________________</td>
+                <td width="410">[&nbsp;&nbsp;&nbsp;] Calibration &nbsp;&nbsp; [&nbsp;&nbsp;&nbsp;] Partial &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [&nbsp;&nbsp;&nbsp;] On-site Calibration</td>
             </tr>
         </table>
 
         <table border="0">
             <tr>
-                <td width="110">Manufacturer\'s Name</td>
+                <td width="110">Equipment Description</td>
                 <td width="10">:</td>
                 <td width="150" class="underline">'.$sample->brand.'</td>
                 <td width="110">Service Request No.</td>
@@ -119,7 +125,7 @@ class storagetankworksheet extends TCPDF {
                 <td width="150" class="underline">'.$request->requestRefNum.'</td>
             </tr>
             <tr>
-                <td>Model No.</td>
+                <td>Manufacturer\'s Name</td>
                 <td>:</td>
                 <td class="underline">'.$sample->model_no.'</td>
                 <td>Sample Code No.</td>
@@ -129,34 +135,71 @@ class storagetankworksheet extends TCPDF {
             <tr>
                 <td>Serial No.</td>
                 <td>:</td>
-                <td class="underline">'.$sample->serial_no.'</td>
-                <td>Date Received </td>
+                <td class="underline">'.$sample->serial_no. '</td>
+                <td>Shell Thickness</td>
                 <td>:</td>
-                <td class="underline">'.$receiveDate.'</td>
+                <td class="underline"></td>
             </tr>
             <tr>
-                <td>Resolution</td>
+                <td>Model No.</td>
                 <td>:</td>
-                <td class="underline">'.$sample->resolution.'</td>
-                <td>Date Calibrated </td>
+                <td class="underline">'.$sample->model_no. '</td>
+                <td colspan="3">Length of high end from tip of </td>
+            </tr>
+            <tr>
+                <td>Product To Be Stored</td>
+                <td>:</td>
+                <td class="underline"></td>
+                <td>cylinder to slip gauge</td>
+                <td>:</td>
+                <td class="underline"></td>
+            </tr>
+            <tr>
+                <td>Barrel Type</td>
+                <td>:</td>
+                <td class="underline"></td>
+                <td>Tilt/Slope</td>
+                <td>:</td>
+                <td>X=__________   Y=__________</td>
+            </tr>
+            <tr>
+                <td>Head Type</td>
+                <td>:</td>
+                <td class="underline"></td>
+                <td>Date Received</td>
+                <td>:</td>
+                <td class="underline">'.$receiveDate. '</td>
+            </tr>
+            <tr>
+                <td>Gauge Type</td>
+                <td>:</td>
+                <td class="underline"></td>
+                <td>Date Calibrated</td>
                 <td>:</td>
                 <td class="underline"></td>
             </tr>
             <tr>
                 <td>Range</td>
                 <td>:</td>
-                <td class="underline">'.$sample->capacity_range.'</td>
+                <td class="underline"></td>
                 <td>Ambient Temperature</td>
                 <td>:</td>
                 <td class="underline"></td>
             </tr>
             <tr>
-                <td>Location</td>
+                <td>Resolution</td>
                 <td>:</td>
                 <td class="underline"></td>
                 <td>Relative Humidity</td>
                 <td>:</td>
                 <td class="underline"></td>
+            </tr>
+            <tr>
+                <td>Location of Calibration</td>
+                <td>:</td>
+                <td class="underline"></td>
+                <td colspan="3"></td>
+               
             </tr>
         </table>
         <table border="0">
@@ -166,9 +209,48 @@ class storagetankworksheet extends TCPDF {
             </tr>
             <tr><td height="10"></td></tr>
             <tr>
-                <td width="540" style="text-align:justify;">The method of calibration is in accordance with HME-CM-001, Calibration of Weighing Scales and Balances” based on EURAMET Calibration Guide No. 18 - “Guidelines on the Calibration of Non-Automatic Weighing Instruments.”
+                <td width="540" style="text-align:justify;">The instrument was calibrated in accordance with HME-CM-501, “Calibration Method for LPG Storage Tank Using Geometrical Method” based on API MPMS Chapter 2.2E/ISO 12917-1:2002.
                 </td>
             </tr>
+            <tr><td height="10"></td></tr>
+        </table>
+        <table>
+            <tr>
+                <td>STANDARD USED:</td>
+            </tr>
+            <tr><td height="10"></td></tr>
+        </table>
+        <table border="1">
+            <tr>
+                <td width="125" class="centerCell">Description</td>
+                <td width="95" class="centerCell">Serial No.</td>
+                <td width="95" class="centerCell">Equipment Code</td>
+                <td width="95" class="centerCell">Certificate No.</td>
+                <td width="125" class="centerCell">Traceable to</td>
+            </tr>
+            <tr>
+                <td height="20"></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td height="20"></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td height="20"></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </table>
+        <table border="0">
             <tr><td height="10"></td></tr>
             <tr>
                 <td>PRELIMINARY EVALUATION:</td>
@@ -194,207 +276,268 @@ class storagetankworksheet extends TCPDF {
             </tr>
             <tr><td height="10"></td></tr>
             <tr>
-                <td width="15">I.</td>
-                <td width="530">Repeatability Test at M = ________________________ (0.5 maximum to maximum capacity) <br>Standard Mass Used: _________________________________________________________
-
-                </td>
-            </tr>
-            <tr><td height="10"></td></tr>
-        </table>
-        <table cellpadding="2" border="1" style="margin:20px;display:block;">
-            <tr valign="middle" style="padding:10px;margin-left;10px;">
-                <td width="110" class="big"><br><br>Number</td>
-                <td width="110" class="big"><br><br>Load<br></td>
-                <td width="230" class="big"><br><br>Balance Reading (&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)<br></td>
-            </tr>
-            <tr>
-                <td class="big"><br>1</td>
-                <td class="big">0<br>M</td>
-                <td class="big"><br></td>
-            </tr>
-            <tr>
-                <td class="big"><br>2</td>
-                <td class="big">0<br>M</td>
-                <td class="big"><br></td>
-            </tr>
-            <tr>
-                <td class="big"><br>3</td>
-                <td class="big">0<br>M</td>
-                <td class="big"><br></td>
-            </tr>
-            <tr>
-                <td class="big"><br>4</td>
-                <td class="big">0<br>M</td>
-                <td class="big"><br></td>
-            </tr>
-            <tr>
-                <td class="big"><br>5</td>
-                <td class="big">0<br>M</td>
-                <td class="big"><br></td>
+                <td width="545" height="15">Circumference of Cylinder: ___________ unit</td>
             </tr>
         </table>
-        <table> 
+        <table border="0">
             <tr>
-                <td width="110"></td>
-                <td width="110"></td>
-                <td width="230"><br><br>Standard Deviation = ______________________</td>
+                <td width="20"></td>
+                <td width="85" class="border centerCell">Trial 1</td>
+                <td width="85" class="border centerCell">Trial 2</td>
+                <td width="85" class="border centerCell">Trial 3</td>
+                <td width="85" class="border centerCell">Trial 4</td>
+                <td width="85" class="border centerCell">Trial 5</td>
+                <td width="85" class="border centerCell">Mean Value</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="border" ></td>
+                <td class="border"></td>
+                <td class="border"></td>
+                <td class="border"></td>
+                <td class="border"></td>
+                <td class="border"></td>
             </tr>
         </table>
         <table>
             <tr><td height="10"></td></tr>
-            <tr><td height="10"></td></tr>
             <tr>
-                <td>Calibrated by: _______________________</td>
+                <td width="545" height="15">Length of Cylinder: ___________ unit</td>
             </tr>
-            <tr><td height="10"></td></tr>
+        </table>
+        <table border="0">
             <tr>
-                <td>Checked by: ________________________</td>
+                <td width="20"></td>
+                <td width="85" class="border centerCell">Trial 1</td>
+                <td width="85" class="border centerCell">Trial 2</td>
+                <td width="85" class="border centerCell">Trial 3</td>
+                <td width="85" class="border centerCell">Trial 4</td>
+                <td width="85" class="border centerCell">Trial 5</td>
+                <td width="85" class="border centerCell">Mean Value</td>
             </tr>
-            <tr><td height="10"></td></tr>
+            <tr>
+                <td></td>
+                <td class="border" ></td>
+                <td class="border"></td>
+                <td class="border"></td>
+                <td class="border"></td>
+                <td class="border"></td>
+                <td class="border"></td>
+            </tr>
         </table>
         <table>
-            <tr><td height="10"></td></tr>  
+            <tr><td height="10"></td></tr>
             <tr>
-                <td width="85">Sample Code No.</td>
+                <td width="545" height="15">Circumference of Head / 2: ___________ unit</td>
+            </tr>
+        </table>
+        <table border="0">
+            <tr>
+                <td width="20"></td>
+                <td width="85" class="border centerCell">Trial 1</td>
+                <td width="85" class="border centerCell">Trial 2</td>
+                <td width="85" class="border centerCell">Trial 3</td>
+                <td width="85" class="border centerCell">Trial 4</td>
+                <td width="85" class="border centerCell">Trial 5</td>
+                <td width="85" class="border centerCell">Mean Value</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="border" ></td>
+                <td class="border"></td>
+                <td class="border"></td>
+                <td class="border"></td>
+                <td class="border"></td>
+                <td class="border"></td>
+            </tr>
+        </table>
+        ';
+        $this->SetFont('helvetica','',10);
+        $this->MultiCell(190, 0, $style.$forms, 0, 'L', 0, 1, 9, 30, true, 0, true, true, 0, 'T', false);
+        $this->AddPage();
+        $forms2 = '
+        <table>
+            <tr>
+                <td width="90">Sample Code No.</td>
                 <td width="10">:</td>
-                <td width="115" class="underline">'.$sampleCode.'</td>
-            </tr>
-            <tr><td height="10"></td></tr>
-            <tr>
-                <td width="15">II.</td>
-                <td width="530">Test for Errors of Indication</td>
-            </tr>
-            <tr>
-                <td width="15"></td>
-                <td width="530">Standard Mass Used: _________________________________________________________</td>
-            </tr>
-            <tr><td height="10"></td></tr>
-        </table>
-        <table border="1">
-            <tr>
-                <td width="60" class="big">Nominal<br>Value<br>(_______)<br></td>
-                <td width="120" class="big">Correction of mass<br>nominal value<br>(_______)<br></td>
-                <td width="80" class="big"><br><br>Load<br>(_______)</td>
-                <td width="110" class="big"><br><br>Balance Reading<br>(_______)</td>
-                <td width="130" class="big">Measurement Deviation =<br>Balance Reading - Load<br>(________)</td>
-            </tr>
-            <tr>
-                <td height="30"></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td height="30"></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td height="30"></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td height="30"></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td height="30"></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td height="30"></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td height="30"></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td height="30"></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td height="30"></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td height="30"></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td height="30"></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td width="150" class="underline">' . $sampleCode . '</td>
             </tr>
         </table>
         <table>
             <tr><td height="10"></td></tr>
-            <tr><td height="10"></td></tr>
             <tr>
-                <td width="20">III.</td>
-                <td width="350">Eccentricity Test at M = _________________(1/3 of maximum capacity).</td>
+                <td>CALIBRATION RESULTS:</td>
             </tr>
             <tr><td height="10"></td></tr>
         </table>
+        <table>
+            <tr>
+                <td width="10" height="15"></td>
+                <td width="140" colspan="2">Tolerances of Length</td>
+                <td width="195" colspan="3"></td>
+                <td width="195" colspan="3">(Temp. before measurement: _________ )</td>
+            </tr>
+            <tr>
+                <td width="10"></td>
+                <td width="70" class="border centerCell" rowspan="2">Nominal Value (_______)</td>
+                <td width="70" class="border centerCell" rowspan="2">Error of Ref. Standards (_______)</td>
+                <td width="325" height="15" class="border centerCell" colspan="5">Slip Gauge Readings,________</td>
+                <td width="65" class="border centerCell" rowspan="2">Mean Value <i>(T1+T2+T3+T4+T5) / 5</i> (_______)</td>
+            </tr>
+            <tr>
+                <td width="10"></td>
+                <td width="65" class="border centerCell">Trial 1</td>
+                <td width="65" class="border centerCell">Trial 2</td>
+                <td width="65" class="border centerCell">Trial 3</td>
+                <td width="65" class="border centerCell">Trial 4</td>
+                <td width="65" class="border centerCell">Trial 5</td>
+            </tr>
+        ';
+        for($i=1;$i<38;$i++){
+            $forms2 .= '
+                <tr>
+                    <td height="15"></td>
+                    <td class="border"></td>
+                    <td class="border"></td>
+                    <td class="border"></td>
+                    <td class="border"></td>
+                    <td class="border"></td>
+                    <td class="border"></td>
+                    <td class="border"></td>
+                    <td class="border"></td>
+                </tr>
+            ';
+        }
+        $forms2 .= '
+        </table>
+        ';
+        $this->MultiCell(190, 0, $style.$forms2, 0, 'L', 0, 1, 9, 30, true, 0, true, true, 0, 'T', false);
 
-        <table border="1">
-            <tr>
-                <td width="100"></td>
-                <td width="80" style="height:20px;text-align:center;">Center</td>
-                <td width="80" style="height:20px;text-align:center;">Front Left </td>
-                <td width="80" style="height:20px;text-align:center;">Back Left</td>
-                <td width="80" style="height:20px;text-align:center;">Back Right</td>
-                <td width="80" style="height:20px;text-align:center;">Front Right</td>
-            </tr>
-            <tr>
-                <td style="height:20px;text-align:center;">Balance Reading<br>(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
-        </table>
-        <table>
-            <tr><td height="10"></td></tr>
-            <tr><td height="10"></td></tr>
-            <tr><td height="10"></td></tr>
-            <tr><td height="10"></td></tr>
-            <tr><td height="10"></td></tr>
-            <tr><td height="10"></td></tr>
-            <tr><td height="10"></td></tr>
-            <tr><td height="10"></td></tr>
-            <tr><td height="10"></td></tr>
-            <tr><td height="10"></td></tr>
+        for($a=0;$a<4;$a++){
+            $this->AddPage();
+            $forms2 = '
+            <table>
+                <tr>
+                    <td width="90">Sample Code No.</td>
+                    <td width="10">:</td>
+                    <td width="150" class="underline">' . $sampleCode . '</td>
+                </tr>
+                <tr><td height="10"></td></tr>
+            </table>
+            <table>
+                <tr>
+                    <td width="10"></td>
+                    <td width="70" class="border centerCell" rowspan="2">Nominal Value (_______)</td>
+                    <td width="70" class="border centerCell" rowspan="2">Error of Ref. Standards (_______)</td>
+                    <td width="325" height="15" class="border centerCell" colspan="5">Slip Gauge Readings,________</td>
+                    <td width="65" class="border centerCell" rowspan="2">Mean Value <i>(T1+T2+T3+T4+T5) / 5</i> (_______)</td>
+                </tr>
+                <tr>
+                    <td width="10"></td>
+                    <td width="65" class="border centerCell">Trial 1</td>
+                    <td width="65" class="border centerCell">Trial 2</td>
+                    <td width="65" class="border centerCell">Trial 3</td>
+                    <td width="65" class="border centerCell">Trial 4</td>
+                    <td width="65" class="border centerCell">Trial 5</td>
+                </tr>
+            ';
+                for ($i = 1; $i < 41; $i++) {
+                    $forms2 .= '
+                    <tr>
+                        <td height="15"></td>
+                        <td class="border"></td>
+                        <td class="border"></td>
+                        <td class="border"></td>
+                        <td class="border"></td>
+                        <td class="border"></td>
+                        <td class="border"></td>
+                        <td class="border"></td>
+                        <td class="border"></td>
+                    </tr>
+                ';
+                }
+                $forms2 .= '
+            </table>
+            ';
+            $this->MultiCell(190, 0, $style . $forms2, 0, 'L', 0, 1, 9, 30, true, 0, true, true, 0, 'T', false);
+        }
+        $this->AddPage();
+        $forms2 = '
+            <table>
+                <tr>
+                    <td width="90">Sample Code No.</td>
+                    <td width="10">:</td>
+                    <td width="150" class="underline">' . $sampleCode . '</td>
+                </tr>
+                <tr><td height="10"></td></tr>
+            </table>
+            <table>
+                <tr>
+                    <td width="10"></td>
+                    <td width="70" class="border centerCell" rowspan="2">Nominal Value (_______)</td>
+                    <td width="70" class="border centerCell" rowspan="2">Error of Ref. Standards (_______)</td>
+                    <td width="325" height="15" class="border centerCell" colspan="5">Slip Gauge Readings,________</td>
+                    <td width="65" class="border centerCell" rowspan="2">Mean Value <i>(T1+T2+T3+T4+T5) / 5</i> (_______)</td>
+                </tr>
+                <tr>
+                    <td width="10"></td>
+                    <td width="65" class="border centerCell">Trial 1</td>
+                    <td width="65" class="border centerCell">Trial 2</td>
+                    <td width="65" class="border centerCell">Trial 3</td>
+                    <td width="65" class="border centerCell">Trial 4</td>
+                    <td width="65" class="border centerCell">Trial 5</td>
+                </tr>
+            ';
+        for ($i = 1; $i < 40; $i++) {
+            $forms2 .= '
+                    <tr>
+                        <td height="15"></td>
+                        <td class="border"></td>
+                        <td class="border"></td>
+                        <td class="border"></td>
+                        <td class="border"></td>
+                        <td class="border"></td>
+                        <td class="border"></td>
+                        <td class="border"></td>
+                        <td class="border"></td>
+                    </tr>
+                ';
+        }
+        $forms2 .= '
+                <tr>
+                    <td width="10" height="15"></td>
+                    <td width="140" colspan="2"></td>
+                    <td width="195" colspan="3"></td>
+                    <td width="195" colspan="3">(Temp. after measurement: _________ )</td>
+                </tr>
+            </table>
+            ';
+        $this->MultiCell(190, 0, $style . $forms2, 0, 'L', 0, 1, 9, 30, true, 0, true, true, 0, 'T', false);
+        $this->AddPage();
+        $forms3 = '
+            <table>
+                <tr>
+                    <td width="90">Sample Code No.</td>
+                    <td width="10">:</td>
+                    <td width="150" class="underline">' . $sampleCode . '</td>
+                </tr>
+                <tr><td height="10"></td></tr>
+            </table>
+        ';
+        $this->MultiCell(190, 0, $style . $forms3, 0, 'L', 0, 1, 9, 30, true, 0, true, true, 0, 'T', false);
+        
+        $this->setJPEGQuality(100);
+        $image_file = 'http://localhost' . Yii::app()->request->baseUrl . '/images/storage_tank.jpg';
+        // Image($file, $x='', $y='', $w=0, $h=0, $type='', $link='', $align='', $resize=false, $dpi=300, $palign='', $ismask=false, $imgmask=false, $border=0, $fitbox=false, $hidden=false, $fitonpage=false)
+        $this->Image($image_file, 8, 35, 195, '', 'JPEG', '', '', false, 300, '', false, false, 0, false, false, false);
+        $this->SetAlpha(1);
+    }
+
+    public function Footer() {
+        
+        $this->SetFont('helvetica', '', 10);
+        $footerCheckby = '
+        <table border="0">
             <tr>
                 <td>Calibrated by: _______________________</td>
             </tr>
@@ -405,15 +548,10 @@ class storagetankworksheet extends TCPDF {
             <tr><td height="10"></td></tr>
         </table>
         ';
-        $this->SetFont('helvetica','',10);
-        $this->MultiCell(190, 0, $forms, 0, 'L', 0, 1, 9, 30, true, 0, true, true, 0, 'T', false);
-    }
-
-    public function Footer() {
-
+        $this->MultiCell(190, 0, $footerCheckby, 0, 'L', 0, 1, 10, 271, true, 0, true, true, 0, 'T', false);
         $footDetails = array(
             'revCode'=>'Rev. 0',
-            'effectDate'=>'Effective Date: 04 May 2020',
+            'effectDate'=>'Effective Date: 04 September 2021',
         );
         // MultiCell($w, $h, $txt, $border=0, $align='J', $fill=0, $ln=1, $x='', $y='', $reseth=true, $stretch=0, $ishtml=false, $autopadding=true, $maxh=0)
 

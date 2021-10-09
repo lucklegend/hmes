@@ -491,6 +491,7 @@ class SampleController extends Controller
 		} elseif ($sampleWorksheet == 'storagetankworksheet') {
 			$pdf = Yii::createComponent('application.extensions.tcpdf.worksheet.storagetankworksheet', 'P', 'cm', 'A4', true, 'UTF-8');
 			$pdf = new storagetankworksheet(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+			$pdf->setFooterMargin(20);
 		} else {
 			$pdf = Yii::createComponent('application.extensions.tcpdf.worksheet.requestPdf', 'P', 'cm', 'A4', true, 'UTF-8');
 			$pdf = new requestPdf(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
@@ -506,7 +507,12 @@ class SampleController extends Controller
 		$pdf->SetCreator(PDF_CREATOR);
 		$pdf->SetTitle($sampleCode);
 		$pdf->SetMargins(0, 28.15, 0);
-		$pdf->SetAutoPageBreak(TRUE, 10);
+		
+		if($sampleWorksheet == 'storagetankworksheet'){
+			$pdf->SetAutoPageBreak(TRUE, 27);	
+		}else{
+			$pdf->SetAutoPageBreak(TRUE, 10);
+		}
 
 		$pdf->AddPage();
 

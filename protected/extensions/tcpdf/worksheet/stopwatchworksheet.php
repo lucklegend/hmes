@@ -187,6 +187,7 @@ class stopwatchworksheet extends TCPDF {
             </tr>
             <tr><td height="10"></td></tr>
         </table>
+        <table>
             <tr>
                 <td>STANDARD USED:</td>
             </tr>
