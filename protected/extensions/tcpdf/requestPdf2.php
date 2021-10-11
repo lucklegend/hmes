@@ -32,7 +32,8 @@ class requestPdf2 extends TCPDF {
         $headDetails = array(
             'header1'=>'HYDROMECH ENGINEERING SERVICES',
             'header2'=>'Banlic Road, Zone 6, San Isidro, Bacolor, Pampanga',
-            'header3'=>'SERVICE REQUEST',
+            'header3'=> '0928 500 9150 / 0921 553 5057 / 0936 405 9335',
+            'header4'=>'SERVICE REQUEST',
         );
         // set JPEG quality
         $this->setJPEGQuality(200);
@@ -50,8 +51,9 @@ class requestPdf2 extends TCPDF {
         $this->MultiCell(200, 0, $headDetails['header1'], 0, 'C', 0, 1, 5, 24.75, true, 0, true, true, 0, 'T', false);
         $this->SetFont('helvetica','',8);
         $this->MultiCell(200, 0, $headDetails['header2'], 0, 'C', 0, 1, 5, 27.75, true, 0, true, true, 0, 'T', false);
+        $this->MultiCell(200, 0, $headDetails['header3'], 0, 'C', 0, 1, 5, 30.75, true, 0, true, true, 0, 'T', false);
         $this->SetFont('helvetica','',12);
-        $this->MultiCell(200, 0, $headDetails['header3'], 0, 'C', 0, 1, 5, 33.75, true, 0, true, true, 0, 'T', false);     
+        $this->MultiCell(200, 0, $headDetails['header4'], 0, 'C', 0, 1, 5, 36.75, true, 0, true, true, 0, 'T', false);     
         
         $this->SetFont('helvetica','',12);
         $this->MultiCell(200, 0, '<br/><br/>'.$headerdata['formTitle'], 0, 'C', 0, 1, 5, 25, true, 0, true, true, 0, 'T', false);
@@ -263,8 +265,8 @@ class requestPdf2 extends TCPDF {
 
                                 $rows .='
                                     <tr nobr="true">
-                                    <td width="103" class="border1"></td>
                                     <td width="100" class="border1"></td>
+                                    <td width="123" class="border1"></td>
                                     <td width="120" class="border1">'.$testMethods.'</td>
                                     <td width="174" class="border1">'.$otherServices.'</td>
                                     <td width="50" style="text-align: right" class="border1">'.Yii::app()->format->formatNumber($analysis->fee).'</td>
@@ -276,6 +278,7 @@ class requestPdf2 extends TCPDF {
                                 }else{
                                     $tm = $analysis->method;
                                 }
+                                
                                 if($analysis->references == "-" || $analysis->references == "To be update" || $analysis->references == "To be updated" || $analysis->references =="To Be Updated" || $analysis->references == "none"){
                                     $an = "";
                                 }else{

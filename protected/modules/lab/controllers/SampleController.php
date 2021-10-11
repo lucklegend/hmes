@@ -136,14 +136,12 @@ class SampleController extends Controller
 
 			if ($model->save()) {
 				//$this->redirect(array('view','id'=>$model->id));
-				$html = "";
+				//Added new feature from JANNO
 				$request = Request::model()->findByPk($requestId);
 				if ($request->sampleCount && $request->anals) {
 					foreach ($request->samps as $sample) {
 						$labCode = Lab::model()->findByPk($request->labId);
-
 						$year = date('Y', strtotime($request->requestDate));
-
 						$code = new Samplecode;
 						//$sampleCode = $code->generateSampleCode($labCode, $year);
 						$tsrNum = $request->requestRefNum;
@@ -153,19 +151,17 @@ class SampleController extends Controller
 							$tsrNum
 						);
 						$number = explode('-', $sampleCode);
-						$this->appendSampleCode($request, $number[1]);
-
-						Sample::model()->updateByPk($sample->id, array('sampleCode' => $sampleCode));
-
-						foreach ($sample->analysesForGeneration as $analysis) {
-							Analysis::model()->updateByPk($analysis->id, array('sampleCode' => $sampleCode));
+						$generated = $this->checkIfGeneratedSamples($request);
+						if($generated == 0){
+							if ($sample->sampleCode == '') {
+								$this->appendSampleCode($request, $number[1]);
+								Sample::model()->updateByPk($sample->id, array('sampleCode' => $sampleCode));
+							}
 						}
-
-						$sampleNew = Sample::model()->findByPk($sample->id);
-						$html .= '<p>' . $sampleNew->sampleName . ' : ' . $sampleNew->sampleCode . '</p><br/>';
+					
 					}
 				}
-
+				//END OF added FEATURE of JANNO
 				if (Yii::app()->request->isAjaxRequest) {
 					echo CJSON::encode(array(
 						'status' => 'success',
@@ -710,5 +706,44 @@ class SampleController extends Controller
 		);
 		echo CJSON::encode($data);
 		exit;
+	}
+	function checkIfGeneratedSamples($request)
+	{
+		$generatedThisRequest = Generatedrequest::model()->count(array(
+			'condition' => 'request_id =:request_id',
+			'params' => array(':request_id' => $request->id)
+		));
+
+		$previousRequest = Request::model()->find(array(
+			'order' => 'id DESC',
+			'condition' => 'id<:id AND rstl_id=:rstl_id AND labId=:labId',
+			'params' => array(':id' => $request->id, ':rstl_id' => Yii::app()->Controller->getRstlId(), ':labId' => $request->labId)
+		));
+
+		$generatedPreviousRequest = Generatedrequest::model()->count(array(
+			'condition' => 'request_id =:request_id',
+			'params' => array(':request_id' => $previousRequest->id)
+		));
+
+		switch ($generatedThisRequest) {
+			case (0):
+
+				if ($generatedPreviousRequest == 1 || !isset($previousRequest)) {
+					//echo "Generate Sample Code!";
+					return 1;
+					break;
+				} else {
+					//echo '<p style="font-style: italic; font-weight: bold; color: red;">Generate Sample Codes from previous requests and refresh this page!</p>';
+					return 2;
+					break;
+				}
+
+			case (1):
+				//echo "Print Request";
+				return 0;
+				break;
+
+				break;
+		}
 	}
 }

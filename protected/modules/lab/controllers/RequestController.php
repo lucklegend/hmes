@@ -1075,7 +1075,7 @@ class RequestController extends Controller
 	
 	public function actionPrintPDF($id)
 	{
-		//echo '<link rel="shortcut icon" href="'.$baseUrl.'/img/icons/favicon.ico?v=2">';
+		// echo '<link rel="shortcut icon" href="'.$baseUrl.'/img/icons/favicon.ico">';
 		$request = Request::model()->findByPk($id);
 
 		$subTotal =0;
@@ -1094,20 +1094,20 @@ class RequestController extends Controller
 
 		$discount = $requestTotal - $discounted;
 		
-        $inplantcharge = $request->inplant_charge;
-        $additional = $request->additional;
-        $totalFees = $inplantcharge + $additional + $subTotal - $discount;
+		$inplantcharge = $request->inplant_charge;
+		$additional = $request->additional;
+		$totalFees = $inplantcharge + $additional + $subTotal - $discount;
 
-        if($request->vat == 1){
-        	$vat = $totalFees *0.12;
-        }else{
-        	$vat = 0;
-        }
-        $grandTotal = $totalFees + $vat;
+		if($request->vat == 1){
+			$vat = $totalFees *0.12;
+		}else{
+			$vat = 0;
+		}
+		$grandTotal = $totalFees + $vat;
 
-        $request = $request->updateByPk($id, array('total'=>$grandTotal) );
+		$request = $request->updateByPk($id, array('total'=>$grandTotal) );
 
-        $request = Request::model()->findByPk($id);
+		$request = Request::model()->findByPk($id);
 		$pdf = Yii::createComponent('application.extensions.tcpdf.requestPdf2', 'P', 'cm', 'A4', true, 'UTF-8');
 		$pdf = new requestPdf2(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
         spl_autoload_register(array('YiiBase','autoload'));

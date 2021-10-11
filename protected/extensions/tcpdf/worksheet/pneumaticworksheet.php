@@ -93,7 +93,7 @@ class pneumaticworksheet extends TCPDF {
             <tr>
                 <td>Contact Information</td>
                 <td>:</td>
-                <td class="underline">'.$contactInformation.'</td>
+                <td class="underline">'.$contactInformation. '</td>
             </tr>
         </table>
         <table border="0">
@@ -101,7 +101,7 @@ class pneumaticworksheet extends TCPDF {
             <tr>
                 <td width="110">Type of Job</td>
                 <td width="10">:</td>
-                <td width="415">[&nbsp;&nbsp;&nbsp;] Hydrostatic Pressure Testing &nbsp;&nbsp;&nbsp; [&nbsp;&nbsp;&nbsp;] Other ____________________________________ </td>
+                <td width="415">[&nbsp;&nbsp;&nbsp;] Pneumatic Pressure Testing &nbsp;&nbsp;&nbsp; [&nbsp;&nbsp;&nbsp;] Other ____________________________________ </td>
             </tr>
             <tr>
                 <td width="110">Equipment Description</td>
@@ -149,7 +149,7 @@ class pneumaticworksheet extends TCPDF {
                 <td class="underline"></td>
                 <td>Date Received</td>
                 <td>:</td>
-                <td class="underline">'.$receiveDate.'</td>
+                <td class="underline">'.$receiveDate. '</td>
             </tr>
             <tr>
                 <td>Location of Testing</td>
@@ -167,7 +167,7 @@ class pneumaticworksheet extends TCPDF {
             </tr>
             <tr><td height="10"></td></tr>
             <tr>
-                <td width="540" style="text-align:justify;">The pressure vessel was tested in accordance with HME-TM-001, “Hydrostatic Pressure Testing of Boilers and Pressure Vessels” based on “The American Society of Mechanical Engineers Boiler and Pressure Vessel Code (ASME BPVC.I-2017)” and DOLE Occupational Safety and Health Standards.
+                <td width="540" style="text-align:justify;">The pressure vessel was tested in accordance with HME-TM-002, “Pneumatic Pressure Testing of Boilers and Pressure Vessels” based on “The American Society of Mechanical Engineers Boiler and Pressure Vessel Code (ASME BPVC.I-2017)” and DOLE Occupational Safety and Health Standards.
                 </td>
             </tr>
         </table>

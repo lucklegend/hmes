@@ -82,7 +82,7 @@ class Sample extends CActiveRecord
 			'sampleCode' => 'Sample Code',
 			'sampleName' => 'Sample Name',
 			'samplingDate' => 'Sampling Date',
-            'description' => 'Description',
+      'description' => 'Description',
 			'remarks' => 'Premilinary Evaluation',
 			'requestId' => 'Request',
 			'request_id' => 'Request',
@@ -129,7 +129,7 @@ class Sample extends CActiveRecord
 		$criteria->compare('analyses',$this->analyses,true);
 		$criteria->compare('sampleCode',$this->sampleCode,true);
 		$criteria->compare('sampleName',$this->sampleName,true);
-        $criteria->compare('samplingDate',$this->samplingDate,true);
+    $criteria->compare('samplingDate',$this->samplingDate,true);
 		$criteria->compare('description',$this->description,true);
 		$criteria->compare('remarks',$this->remarks,true);
 		$criteria->compare('requestId',$this->requestId,true);
@@ -168,7 +168,7 @@ class Sample extends CActiveRecord
 		$criteria->compare('analyses',$this->analyses,true);
 		$criteria->compare('sample.sampleCode',$this->sampleCode,true);
 		$criteria->compare('sample.sampleName',$this->sampleName,true);
-        $criteria->compare('sample.samplingDate',$this->samplingDate,true);
+    $criteria->compare('sample.samplingDate',$this->samplingDate,true);
 		$criteria->compare('sample.description',$this->description,true);
 		$criteria->compare('sample.remarks',$this->remarks,true);
 		$criteria->compare('sample.requestId',$this->requestId,true);
@@ -220,32 +220,32 @@ class Sample extends CActiveRecord
     }
     
 	public function beforeSave(){
-	   if(parent::beforeSave())
-	   {
+	  if(parent::beforeSave()){
 			if($this->isNewRecord){
-                $this->samplingDate = date('Y-m-d',  strtotime($_POST['Sample']['samplingDate']));
+        $this->samplingDate = date('Y-m-d',  strtotime($_POST['Sample']['samplingDate']));
 				$this->cancelled = 0;
-		        return true;
+		    return true;
 			}else{
-                $this->samplingDate = date('Y-m-d',  strtotime($_POST['Sample']['samplingDate']));
+				
+        $this->samplingDate = date('Y-m-d',  strtotime($_POST['Sample']['samplingDate']));
 				return true;
 			}
-	   }
-	   return false;
+	  }
+	  return false;
 	}
 	
 	public function getStatus() {
         
-        $statuscolor='white';
-        switch ($this->cancelled) {
-            case 0:
-                $statuscolor='green';
-                break;
-            case 1:
-                $statuscolor='redish';
-                break;
-        }
-        return $statuscolor;
+		$statuscolor='white';
+		switch ($this->cancelled) {
+			case 0:
+				$statuscolor='green';
+				break;
+			case 1:
+				$statuscolor='redish';
+				break;
+		}
+		return $statuscolor;
         
     }
     

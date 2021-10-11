@@ -135,19 +135,19 @@ class Samplecode extends CActiveRecord
 	}
 	function generateSampleCode2($modelLab, $year, $tsrNum){
 		$sampleCode = Samplecode::model()->find(array(
-	   			'select'=>'*',
+	   		'select'=>'*',
 				'order'=>'number DESC, id DESC',
-	    		'condition'=>'rstl_id = :rstl_id AND labId = :labId AND year = :year AND cancelled = 0 AND requestId = :requestId',
-	    		'params'=>array(':rstl_id' => Yii::app()->Controller->getRstlId(), ':labId' => $modelLab->id, ':year' => $year, ':requestId'=>$tsrNum )
+	    	'condition'=>'rstl_id = :rstl_id AND labId = :labId AND year = :year AND cancelled = 0 AND requestId = :requestId',
+	    	'params'=>array(':rstl_id' => Yii::app()->Controller->getRstlId(), ':labId' => $modelLab->id, ':year' => $year, ':requestId'=>$tsrNum )
 			));
 			
 		if(isset($sampleCode)){
 			return $modelLab->labCode.'-'.Yii::app()->Controller->addZeros($sampleCode->number + 1);
 		}else{
 			$initializeCode = Initializecode::model()->find(array(
-	   			'select'=>'*',
-	    		'condition'=>'rstl_id = :rstl_id AND lab_id = :lab_id AND codeType = :codeType',
-	    		'params'=>array(':rstl_id' => Yii::app()->Controller->getRstlId(), ':lab_id' => $modelLab->id, ':codeType' => 2)
+	   		'select'=>'*',
+	    	'condition'=>'rstl_id = :rstl_id AND lab_id = :lab_id AND codeType = :codeType',
+	    	'params'=>array(':rstl_id' => Yii::app()->Controller->getRstlId(), ':lab_id' => $modelLab->id, ':codeType' => 2)
 			));
 			$startCode = Yii::app()->Controller->addZeros($initializeCode->startCode + 1);
 			return $modelLab->labCode.'-'.$startCode;
