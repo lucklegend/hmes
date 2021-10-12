@@ -1,8 +1,9 @@
 <div style="position:relative">
-<?php 
-/* @var $this RequestController */
-/* @var $model Request */
+<?php
+	/* @var $this RequestController */
+	/* @var $model Request */
 
+	
 if($model->cancelled)
 	$this->renderPartial('_cancelled',array('model'=>$model->cancelDetails));
 	
@@ -761,6 +762,9 @@ $('#analysis-grid table tbody tr').live('click',function()
 		}
 });
 ");
+if (isset($_GET['error_msg'])) {
+	echo '<script type="text/javascript">alert("One or more analysis is missing. Please CHECK!");</script>';
+}
 ?> 
 
 </div>

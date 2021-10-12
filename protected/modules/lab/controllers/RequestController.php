@@ -1079,10 +1079,19 @@ class RequestController extends Controller
 		$request = Request::model()->findByPk($id);
 
 		$subTotal =0;
+		$allSamplesCount = count($request->samps);
+		$analysesCount = $allSamplesCount;
 		foreach($request->samps as $sample){
+			$count = Analysis::model()->findAllByAttributes(array('sample_id'=>$sample->id));
+			if(count($count) <= 0){
+				$analysesCount--;
+			}
 			 foreach($sample->analyses as $analysis){
 			 	$subTotal = $subTotal + $analysis->fee;
 			 }
+		}
+		if($analysesCount != $allSamplesCount){
+			$this->redirect(array('request/view','id'=>$id, 'error_msg'=>1));
 		}
 
 		if($request->discount != 8){

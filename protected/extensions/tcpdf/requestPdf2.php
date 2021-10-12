@@ -66,13 +66,15 @@ class requestPdf2 extends TCPDF {
                   table {
                     font-style: arial;
                     width: 100%;
-                    padding-right: 15px;
+                    padding-right: 7px;
+                  }td.border1{
+                      border:1px solid #000;
                   }
                 </style>
             ';
 
             $html = '
-                <table>
+                <table border="0">
                     <tr>
                         <td width="50%">SR No.: '.$request->requestRefNum.'</td>
                         <td width="50%" align="right" style="text-align:right;">'.$dateMake.'</td>
