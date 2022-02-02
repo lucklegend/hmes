@@ -105,7 +105,7 @@ class reliefvalveworksheet extends TCPDF {
             <tr>
                 <td width="110">Type of Job</td>
                 <td width="10">:</td>
-                <td width="290">[&nbsp;&nbsp;&nbsp;] Calibration &nbsp;&nbsp;&nbsp; [&nbsp;&nbsp;&nbsp;] Partial &nbsp;&nbsp;&nbsp; [&nbsp;&nbsp;&nbsp;] On-site Calibration</td>
+                <td width="320">[&nbsp;&nbsp;&nbsp;] Calibration &nbsp;&nbsp;&nbsp; [&nbsp;&nbsp;&nbsp;] Partial &nbsp;&nbsp;&nbsp; [&nbsp;&nbsp;&nbsp;] On-site Calibration &nbsp;&nbsp;&nbsp; [&nbsp;&nbsp;&nbsp;] Others</td>
             </tr>
         </table>
 
@@ -114,39 +114,39 @@ class reliefvalveworksheet extends TCPDF {
                 <td width="110">Instrument Description</td>
                 <td width="10">:</td>
                 <td width="150" class="underline">'.$sample->sampleName.'</td>
-                <td width="110">Service Request No.</td>
-                <td width="10">:</td>
-                <td width="150" class="underline">'.$sample->requestId.'</td>
+                <td width="110"></td>
+                <td width="10"></td>
+                <td width="150" ></td>
             </tr>
             <tr>
                 <td width="110">Manufacturer\'s Name</td>
                 <td width="10">:</td>
                 <td width="150" class="underline">'.$sample->brand.'</td>
-                <td width="110">Sample Code No.</td>
+                <td width="110">Service Request No.</td>
                 <td width="10">:</td>
-                <td width="150" class="underline">'.$sampleCode.'</td>
+                <td width="150" class="underline">'.$sample->requestId.'</td>
             </tr>
             <tr>
                 <td>Model No.</td>
                 <td>:</td>
                 <td class="underline"></td>
-                <td>Date Received</td>
-                <td>:</td>
-                <td class="underline">'.$receiveDate.'</td>
+                <td width="110">Sample Code No.</td>
+                <td width="10">:</td>
+                <td width="150" class="underline">'.$sampleCode.'</td>
             </tr>
             <tr>
                 <td>Serial No.</td>
                 <td>:</td>
                 <td class="underline">'.$sample->serial_no.'</td>
-                <td>Date Calibrated</td>
+                <td>Date Received</td>
                 <td>:</td>
-                <td class="underline"></td>
+                <td class="underline">'.$receiveDate.'</td>
             </tr>
             <tr>
                 <td>Range</td>
                 <td>:</td>
                 <td class="underline">'.$sample->capacity_range.'</td>
-                <td>Ambient Temperature</td>
+                <td>Date Calibrated</td>
                 <td>:</td>
                 <td class="underline"></td>
             </tr>
@@ -154,7 +154,7 @@ class reliefvalveworksheet extends TCPDF {
                 <td>Resolution</td>
                 <td>:</td>
                 <td class="underline">'.$sample->resolution.'</td>
-                <td>Relative Humidity</td>
+                <td>Ambient Temperature</td>
                 <td>:</td>
                 <td class="underline"></td>
             </tr>
@@ -162,9 +162,9 @@ class reliefvalveworksheet extends TCPDF {
                 <td>Location of Calibration</td>
                 <td>:</td>
                 <td class="underline"></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td>Relative Humidity</td>
+                <td>:</td>
+                <td class="underline"></td>
             </tr>
         </table>
         <table border="0">
@@ -174,7 +174,7 @@ class reliefvalveworksheet extends TCPDF {
             </tr>
             <tr><td height="10"></td></tr>
             <tr>
-                <td width="540" style="text-align:justify;">The method of calibration is based on HME-CM-202, “Calibration of Pressure Relief Valves”, a laboratory developed method.
+                <td width="540" style="text-align:justify;">The instrument was calibrated in accordance with HME-CM-202, “Calibration of Pressure Relief Valves”, a laboratory developed method.
                 </td>
             </tr>
             <tr><td height="10"></td></tr>
@@ -229,19 +229,19 @@ class reliefvalveworksheet extends TCPDF {
                 <td width="20"></td>
                 <td width="110">Cap and Lever</td>
                 <td width="155">[&nbsp;&nbsp;&nbsp;] satisfactory</td>
-                <td width="255">[&nbsp;&nbsp;&nbsp;] with damage______________________</td>
+                <td width="255">[&nbsp;&nbsp;&nbsp;] unsatisfactory</td>
             </tr>
             <tr>
                 <td></td>
                 <td>Body</td>
                 <td>[&nbsp;&nbsp;&nbsp;] satisfactory</td>
-                <td>[&nbsp;&nbsp;&nbsp;] with damage______________________</td>
+                <td>[&nbsp;&nbsp;&nbsp;] unsatisfactory</td>
             </tr>
             <tr>
                 <td></td>
                 <td>Threads</td>
                 <td>[&nbsp;&nbsp;&nbsp;] satisfactory</td>
-                <td>[&nbsp;&nbsp;&nbsp;] with damage______________________</td>
+                <td>[&nbsp;&nbsp;&nbsp;] unsatisfactory</td>
             </tr>
             <tr>
                 <td></td>
@@ -274,7 +274,7 @@ class reliefvalveworksheet extends TCPDF {
                 <td width="100" class="centerCell">Trial 1</td>
                 <td width="100" class="centerCell">Trial 2</td>
                 <td width="100" class="centerCell">Trial 3</td>
-                <td width="105" class="centerCell">Mean <i>(T1+T2+T3) / 3</i></td>
+                <td width="105" class="centerCell">Mean <br><i>(T1+T2+T3) / 3</i></td>
             </tr>
             <tr>
                 <td class="centerCell" height="20">1</td>
@@ -311,7 +311,7 @@ class reliefvalveworksheet extends TCPDF {
                 <td width="100" class="centerCell">Trial 1</td>
                 <td width="100" class="centerCell">Trial 2</td>
                 <td width="100" class="centerCell">Trial 3</td>
-                <td width="105" class="centerCell">Mean <i>(T1+T2+T3) / 3</i></td>
+                <td width="105" class="centerCell">Mean <br><i>(T1+T2+T3) / 3</i></td>
             </tr>
             <tr>
                 <td class="centerCell" height="20">1</td>

@@ -1,7 +1,7 @@
 <?php
 require_once(dirname(__FILE__).'/../tcpdf.php');
 
-class hydrostaticworksheet extends TCPDF {
+class steeltapeworksheet extends TCPDF {
  
     var $request;
     var $customerId;
@@ -27,11 +27,11 @@ class hydrostaticworksheet extends TCPDF {
         $this->SetAlpha(1);
 
         $headDetails = array(
-            'title'=>'TESTING WORKSHEET FOR HYDROSTATIC PRESSURE TESTING OF BOILERS AND PRESSURE VESSELS',
-            'code'=>'HME-TM-001-F01',
+            'title'=>'CALIBRATION WORKSHEET OF STEEL TAPE MEASURE',
+            'code'=>'HME-CM-302-F01',
         );
         // MultiCell($w, $h, $txt, $border=0, $align='J', $fill=0, $ln=1, $x='', $y='', $reseth=true, $stretch=0, $ishtml=false, $autopadding=true, $maxh=0)
-        $this->SetFont('helvetica','B',12);
+        $this->SetFont('helvetica','B',13);
         $this->MultiCell(120, 0, $headDetails['title'], 0, 'L', 0, 1, 82, 7, true, 0, true, true, 0, 'T', false);
         $this->SetFont('helvetica','',12);
         $this->MultiCell(120, 0, $headDetails['code'], 0, 'L', 0, 1, 82, 18, true, 0, true, true, 0, 'T', false);
@@ -66,6 +66,10 @@ class hydrostaticworksheet extends TCPDF {
             padding: 10px;
             margin: 10px;
           }
+          td.centerCell{
+            text-align: center;
+            vertical-align: middle;
+          }
         </style>
         <table border="0">
             <tr>
@@ -97,23 +101,24 @@ class hydrostaticworksheet extends TCPDF {
             </tr>
         </table>
         <table border="0">
-            <tr><td height="10"></td></tr>
+            <tr><td height="7"></td></tr>
             <tr>
                 <td width="110">Type of Job</td>
                 <td width="10">:</td>
-                <td width="415">[&nbsp;&nbsp;&nbsp;] Hydrostatic Pressure Testing &nbsp;&nbsp;&nbsp; [&nbsp;&nbsp;&nbsp;] Other ____________________________________ </td>
+                <td width="450">[&nbsp;&nbsp;&nbsp;] CALIBRATION &nbsp;&nbsp;[&nbsp;&nbsp;&nbsp;] PARTIAL &nbsp;&nbsp; [&nbsp;&nbsp;&nbsp;] On-site Calibration &nbsp;&nbsp; [&nbsp;&nbsp;&nbsp;] Other__________________</td>
             </tr>
-            <tr><td height="10"></td></tr>
+        </table>
+        <table border="0">
             <tr>
-                <td width="110">Equipment Description</td>
+                <td width="110">Instrument Description</td>
                 <td width="10">:</td>
-                <td width="150" class="underline">'.$sample->sampleName.'</td>
-                <td width="115"></td>
-                <td width="10"></td>
-                <td width="145"></td>
+                <td width="150">[&nbsp;&nbsp;&nbsp;] Steel Tape Measure </td>
+                <td width="110">[&nbsp;&nbsp;&nbsp;] Others</td>
+                <td width="10">:</td>
+                <td width="150" class="underline"></td>
             </tr>
             <tr>
-                <td>Manufacture\'s Name: </td>
+                <td>Manufacturer\'s Name</td>
                 <td>:</td>
                 <td class="underline">'.$sample->brand.'</td>
                 <td>Service Request No.</td>
@@ -124,9 +129,9 @@ class hydrostaticworksheet extends TCPDF {
                 <td>Model No.</td>
                 <td>:</td>
                 <td class="underline">'.$sample->model_no.'</td>
-                <td>Sample Code No.</td>
-                <td>:</td>
-                <td class="underline">'.$sampleCode.'</td>
+                <td width="110">Sample Code No.</td>
+                <td width="10">:</td>
+                <td width="150" class="underline">'.$sampleCode.'</td>
             </tr>
             <tr>
                 <td>Serial No.</td>
@@ -137,23 +142,23 @@ class hydrostaticworksheet extends TCPDF {
                 <td class="underline">'.$receiveDate.'</td>
             </tr>
             <tr>
-                <td>Capacity</td>
+                <td>Range</td>
                 <td>:</td>
                 <td class="underline">'.$sample->capacity_range.'</td>
-                <td>Date of Test Conducted</td>
+                <td>Date Calibrated</td>
                 <td>:</td>
                 <td class="underline"></td>
             </tr>
             <tr>
-                <td>Pressure Vessel No.</td>
+                <td>Resolution</td>
                 <td>:</td>
-                <td class="underline"></td>
-                <td>Ambient Temperature </td>
+                <td class="underline">'.$sample->resolution.'</td>
+                <td>Ambient Temperature</td>
                 <td>:</td>
                 <td class="underline"></td>
             </tr>
             <tr>
-                <td>Location of Testing</td>
+                <td>Location of Calibration</td>
                 <td>:</td>
                 <td class="underline"></td>
                 <td>Relative Humidity</td>
@@ -162,150 +167,135 @@ class hydrostaticworksheet extends TCPDF {
             </tr>
         </table>
         <table border="0">
-            <tr><td height="10"></td></tr>
+            <tr><td height="5"></td></tr>
             <tr>
-                <td><b>TEST METHOD:</b></td>
+                <td>CALIBRATION METHOD:</td>
             </tr>
-            <tr><td height="10"></td></tr>
+            <tr><td height="5"></td></tr>
             <tr>
-                <td width="540" style="text-align:justify;">The pressure vessel was tested in accordance with HME-TM-001, “Hydrostatic Pressure Testing of Boilers and Pressure Vessels” based on “The American Society of Mechanical Engineers Boiler and Pressure Vessel Code (ASME BPVC.I-2017)” and DOLE Occupational Safety and Health Standards.
+                <td width="540" style="text-align:justify;">The instrument was calibrated in accordance with HME-CM-302, “Calibration Method of Steel Tape Measure” based on Japan Industrial Standard, JIS 7512:1993.
                 </td>
             </tr>
+            <tr><td height="10"></td></tr>
         </table>
-        <table border="0">
-            <tr><td height="10"></td></tr>
             <tr>
-                <td><b>TEST EQUIPMENT:</b></td>
-            </tr>
-            <tr><td height="10"></td></tr>
-            <tr>
-                <td width="110">Type of Equipment</td>
-                <td width="10">:</td>
-                <td width="150" class="underline"></td>
-                <td width="110">Pressure Range</td>
-                <td width="10">:</td>
-                <td width="150" class="underline"></td>
-            </tr>
-             <tr>
-                <td>Calibration Date</td>
-                <td>:</td>
-                <td class="underline"></td>
-                <td>Manufacturer/Brand</td>
-                <td>:</td>
-                <td class="underline"></td>
-            </tr>
-        </table>
-        <table border="0">
-            <tr><td height="10"></td></tr>
-            <tr>
-                <td><b>TEST PARAMETERS:</b></td>
-            </tr>
-            <tr><td height="10"></td></tr>
-            <tr>
-                <td width="110">Test Fluid</td>
-                <td width="10">:</td>
-                <td width="150" class="underline"></td>
-                <td width="110">Fluid Temperature</td>
-                <td width="10">:</td>
-                <td width="150" class="underline"></td>
-            </tr>
-             <tr>
-                <td>Working Pressure</td>
-                <td>:</td>
-                <td class="underline"></td>
-                <td>Test Pressure</td>
-                <td>:</td>
-                <td class="underline"></td>
+                <td>STANDARD USED:</td>
             </tr>
             <tr><td height="10"></td></tr>
         </table>
-        <table border="1"> 
+        <table border="1">
             <tr>
-                <td width="175" class="big"><b>Step<br>(min)</b></td>
-                <td width="175" class="big"><b>Time</b></td>
-                <td width="175" class="big"><b>Pressure Reading<br>(______)</b></td>
+                <td width="125" class="centerCell">Description</td>
+                <td width="95" class="centerCell">Serial No.</td>
+                <td width="95" class="centerCell">Equipment Code</td>
+                <td width="95" class="centerCell">Certificate No.</td>
+                <td width="125" class="centerCell">Traceable to</td>
             </tr>
             <tr>
-                <td height="20"></td>
+                <td height="15"></td>
+                <td></td>
+                <td></td>
                 <td></td>
                 <td></td>
             </tr>
-             <tr>
-                <td height="20"></td>
+            <tr>
+                <td height="15"></td>
+                <td></td>
+                <td></td>
                 <td></td>
                 <td></td>
             </tr>
-             <tr>
-                <td height="20"></td>
+            <tr>
+                <td height="15"></td>
                 <td></td>
                 <td></td>
-            </tr>
-             <tr>
-                <td height="20"></td>
-                <td></td>
-                <td></td>
-            </tr>
-             <tr>
-                <td height="20"></td>
                 <td></td>
                 <td></td>
             </tr>
         </table>
-        <table border="0">
+        <table>
             <tr><td height="10"></td></tr>
+        <table>
             <tr>
-                <td><b>RESULTS:</b></td>
-            </tr>
-            <tr><td height="10"></td></tr>
-        </table>
-        <table border="0">
-            <tr>
-                <td width="75">Pressure Test: </td>
-                <td width="14" class="border"></td>
-                <td width="75">satisfactory</td>
-                <td width="14" class="border"></td>
-                <td width="350">unsatisfactory (explain) ________________________________________</td>
-            </tr>
-        </table>
-        <table border="0">
-            <tr><td height="10"></td></tr>
-            <tr>
-                <td><b>NOTES:</b></td>
+                <td>PRELIMINARY EVALUATION:</td>
             </tr>
             <tr><td height="10"></td></tr>
             <tr>
-                <td width="10"></td>
-                <td width="15">1.</td>
-                <td>Calibrate pressure gauges and safety valve once every six months.</td>
-            </tr>
-             <tr>
-                <td width="10"></td>
-                <td width="15">2.</td>
-                <td>Set the popping pressure of the safety valve to the maximum allowable working pressure.</td>
+                <td width="20"></td>
+                <td width="110">Scale/Graduations</td>
+                <td width="185">[&nbsp;&nbsp;&nbsp;] readable</td>
+                <td width="225">[&nbsp;&nbsp;&nbsp;] unsatisfactory</td>
             </tr>
             <tr>
-                <td width="10"></td>
-                <td width="15">3.</td>
-                <td class="underline"></td>
+                <td></td>
+                <td>Missing / Broken parts</td>
+                <td>[&nbsp;&nbsp;&nbsp;] ______________________________</td>
+                <td>[&nbsp;&nbsp;&nbsp;] none</td>
+            </tr>
+            <tr style="height:5px;padding:0px;line-height:0px;"><td height="10" style="height:5px;"></td></tr>
+            <tr>
+                <td width="540">Visual inspection shows that the general condition and workmanship of the instrument were found __________________________________________________________________________________________________________________</td>
+            </tr>
+            <tr><td height="10"></td></tr>
+            <tr>
+                <td width="225">CALIBRATION RESULTS:</td>
+            </tr>
+            <tr><td height="10"></td></tr>
+            <tr>
+                <td width="100" colspan="5">Tolerances of Length</td>
             </tr>
             <tr>
-                <td width="10"></td>
-                <td width="15">4.</td>
-                <td class="underline"></td>
+                <td width="20" height="15"></td>
+                <td width="500" colspan="5" align="right">(Temp. before measurement:___________)</td>
             </tr>
         </table>
-        <table border="0">
-            <tr><td height="10"></td></tr>
+        <table>
             <tr>
-                <td width="80">Conducted by:</td>
-                <td width="150" class="underline"></td>
+                <td width="20"></td>
+                <td width="60" class="centerCell border" rowspan="2">Nominal Value, (mm)</td>
+                <td width="300" class="centerCell border" colspan="5">Error Reading,__________</td>
+                <td width="70" class="centerCell border" rowspan="2">Average<br>(mm)</td>
+                <td width="70" class="centerCell border" rowspan="2"><span style="font-size: 8px;">Error of Ref. Standards (mm)</span></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="centerCell border">1</td>
+                <td class="centerCell border">2</td>
+                <td class="centerCell border">3</td>
+                <td class="centerCell border">4</td>
+                <td class="centerCell border">5</td>
+            </tr>
+            ';
+            for($i=0;$i<12;$i++){
+                $forms .='
+                    <tr>    
+                        <td></td>
+                        <td class="border"></td>
+                        <td class="border"></td>
+                        <td class="border"></td>
+                        <td class="border"></td>
+                        <td class="border"></td>
+                        <td class="border"></td>
+                        <td class="border"></td>
+                        <td class="border"></td>
+                    </tr>
+                ';
+
+            }
+        $forms .='
+            <tr>
+                <td width="20"></td>
+                <td width="500" colspan="5" align="right">(Temp. after measurement:___________)</td>
+            </tr>
+        </table>
+        <table>     
+            <tr>
+                <td width="250">Calibrated by: _______________________</td>
             </tr>
             <tr><td height="10"></td></tr>
             <tr>
-                <td >Checked by:</td>
-                <td class="underline"></td>
+                <td>Checked by: ________________________</td>
             </tr>
-            
         </table>
         ';
         $this->SetFont('helvetica','',10);
@@ -315,8 +305,8 @@ class hydrostaticworksheet extends TCPDF {
     public function Footer() {
 
         $footDetails = array(
-            'revCode'=>'Rev. 1',
-            'effectDate'=>'Effective Date: 01 September 2021',
+            'revCode'=>'Rev. 0',
+            'effectDate'=>'Effective Date: ',
         );
         // MultiCell($w, $h, $txt, $border=0, $align='J', $fill=0, $ln=1, $x='', $y='', $reseth=true, $stretch=0, $ishtml=false, $autopadding=true, $maxh=0)
 

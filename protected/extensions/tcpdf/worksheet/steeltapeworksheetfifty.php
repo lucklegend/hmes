@@ -1,7 +1,7 @@
 <?php
 require_once(dirname(__FILE__).'/../tcpdf.php');
 
-class tempcontrollerworksheet extends TCPDF {
+class SteelTapeWorksheetFifty extends TCPDF {
  
     var $request;
     var $customerId;
@@ -27,8 +27,8 @@ class tempcontrollerworksheet extends TCPDF {
         $this->SetAlpha(1);
 
         $headDetails = array(
-            'title'=>'CALIBRATION WORKSHEET OF TEMPERATURE CONTROLLER, INDICATOR, AND RECORDER',
-            'code'=>'HME-CM-101-F01',
+            'title'=>'CALIBRATION WORKSHEET OF STEEL TAPE MEASURE',
+            'code'=>'HME-CM-302-F01',
         );
         // MultiCell($w, $h, $txt, $border=0, $align='J', $fill=0, $ln=1, $x='', $y='', $reseth=true, $stretch=0, $ishtml=false, $autopadding=true, $maxh=0)
         $this->SetFont('helvetica','B',13);
@@ -105,33 +105,25 @@ class tempcontrollerworksheet extends TCPDF {
             <tr>
                 <td width="110">Type of Job</td>
                 <td width="10">:</td>
-                <td width="150">[&nbsp;&nbsp;&nbsp;] CALIBRATION</td>
-                <td width="230">[&nbsp;&nbsp;&nbsp;] PARTIAL &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [&nbsp;&nbsp;&nbsp;] On-site Calibration </td>
+                <td width="450">[&nbsp;&nbsp;&nbsp;] CALIBRATION &nbsp;&nbsp;[&nbsp;&nbsp;&nbsp;] PARTIAL &nbsp;&nbsp; [&nbsp;&nbsp;&nbsp;] On-site Calibration &nbsp;&nbsp; [&nbsp;&nbsp;&nbsp;] Other__________________</td>
             </tr>
         </table>
         <table border="0">
             <tr>
                 <td width="110">Instrument Description</td>
                 <td width="10">:</td>
-                <td width="150">[&nbsp;&nbsp;&nbsp;] Temperature Controller </td>
-                <td width="180" colspan="3">[&nbsp;&nbsp;&nbsp;] Temperature Recorder </td>
-            </tr>
-            <tr>
-                <td width="110"></td>
-                <td width="10"></td>
-                <td width="150">[&nbsp;&nbsp;&nbsp;] Temperature Indicator </td>
-                <td width="280" colspan="3">[&nbsp;&nbsp;&nbsp;] Other : _________________________ </td>
-            </tr>
-            <tr>
-                <td colspan="6" height="7"></td>
-            </tr>
-            <tr>
-                <td width="110">Manufacturer\'s Name</td>
+                <td width="150">[&nbsp;&nbsp;&nbsp;] Steel Tape Measure </td>
+                <td width="110">[&nbsp;&nbsp;&nbsp;] Others</td>
                 <td width="10">:</td>
-                <td width="150" class="underline">'.$sample->brand.'</td>
-                <td width="110">Service Request No.</td>
-                <td width="10">:</td>
-                <td width="150" class="underline">'.$sample->requestId.'</td>
+                <td width="150" class="underline"></td>
+            </tr>
+            <tr>
+                <td>Manufacturer\'s Name</td>
+                <td>:</td>
+                <td class="underline">'.$sample->brand.'</td>
+                <td>Service Request No.</td>
+                <td>:</td>
+                <td class="underline">'.$sample->requestId.'</td>
             </tr>
             <tr>
                 <td>Model No.</td>
@@ -181,7 +173,7 @@ class tempcontrollerworksheet extends TCPDF {
             </tr>
             <tr><td height="5"></td></tr>
             <tr>
-                <td width="540" style="text-align:justify;">The method of calibration is based on HME-CM-101, “Calibration of Temperature Controller, Indicator, and Recorder”.
+                <td width="540" style="text-align:justify;">The instrument was calibrated in accordance with HME-CM-302, “Calibration Method of Steel Tape Measure” based on Japan Industrial Standard, JIS 7512:1993.
                 </td>
             </tr>
             <tr><td height="10"></td></tr>
@@ -200,21 +192,21 @@ class tempcontrollerworksheet extends TCPDF {
                 <td width="125" class="centerCell">Traceable to</td>
             </tr>
             <tr>
-                <td height="20"></td>
+                <td height="15"></td>
                 <td></td>
                 <td></td>
                 <td></td>
                 <td></td>
             </tr>
             <tr>
-                <td height="20"></td>
+                <td height="15"></td>
                 <td></td>
                 <td></td>
                 <td></td>
                 <td></td>
             </tr>
             <tr>
-                <td height="20"></td>
+                <td height="15"></td>
                 <td></td>
                 <td></td>
                 <td></td>
@@ -231,13 +223,13 @@ class tempcontrollerworksheet extends TCPDF {
             <tr>
                 <td width="20"></td>
                 <td width="110">Scale/Graduations</td>
-                <td width="155">[&nbsp;&nbsp;&nbsp;] readable</td>
-                <td width="255">[&nbsp;&nbsp;&nbsp;] unsatisfactory</td>
+                <td width="185">[&nbsp;&nbsp;&nbsp;] readable</td>
+                <td width="225">[&nbsp;&nbsp;&nbsp;] unsatisfactory</td>
             </tr>
             <tr>
                 <td></td>
                 <td>Missing / Broken parts</td>
-                <td>[&nbsp;&nbsp;&nbsp;] ________________________</td>
+                <td>[&nbsp;&nbsp;&nbsp;] ______________________________</td>
                 <td>[&nbsp;&nbsp;&nbsp;] none</td>
             </tr>
             <tr style="height:5px;padding:0px;line-height:0px;"><td height="10" style="height:5px;"></td></tr>
@@ -249,30 +241,37 @@ class tempcontrollerworksheet extends TCPDF {
                 <td width="225">CALIBRATION RESULTS:</td>
             </tr>
             <tr><td height="10"></td></tr>
+            <tr>
+                <td width="100" colspan="5">Tolerances of Length</td>
+            </tr>
+            <tr>
+                <td width="20" height="15"></td>
+                <td width="500" colspan="5" align="right">(Temp. before measurement:___________)</td>
+            </tr>
         </table>
         <table>
             <tr>
-                <td colspan="4" height="15"></td>
-                <td colspan="3">(Temp. before measurement:____________)</td>
+                <td width="20"></td>
+                <td width="60" class="centerCell border" rowspan="2">Nominal Value, (mm)</td>
+                <td width="300" class="centerCell border" colspan="5">Error Reading,__________</td>
+                <td width="70" class="centerCell border" rowspan="2">Average<br>(mm)</td>
+                <td width="70" class="centerCell border" rowspan="2"><span style="font-size: 8px;">Error of Ref. Standards (mm)</span></td>
             </tr>
             <tr>
-                
-                <td width="130" class="centerCell border" rowspan="2">Standard Value (mA, RTD, T/C type____), _____</td>
-                <td width="90" class="centerCell border" rowspan="2">Expected Output, ________</td>
-                <td height="15" width="170" class="centerCell border" colspan="3">UIC, ____</td>
-                <td width="70" class="centerCell border" rowspan="2">Average, _______</td>
-                <td width="70" class="centerCell border" rowspan="2">Measurement Deviation, ________</td>
-            </tr>
-            <tr>
-                <td height="15" class="centerCell border">Trial 1</td>
-                <td class="centerCell border">Trial 2</td>
-                <td class="centerCell border">Trial 3</td>
+                <td></td>
+                <td class="centerCell border">1</td>
+                <td class="centerCell border">2</td>
+                <td class="centerCell border">3</td>
+                <td class="centerCell border">4</td>
+                <td class="centerCell border">5</td>
             </tr>
             ';
-            for($i=0;$i<5;$i++){
+            for($i=0;$i<12;$i++){
                 $forms .='
                     <tr>    
-                        <td height="25" class="border"></td>
+                        <td></td>
+                        <td class="border"></td>
+                        <td class="border"></td>
                         <td class="border"></td>
                         <td class="border"></td>
                         <td class="border"></td>
@@ -285,11 +284,73 @@ class tempcontrollerworksheet extends TCPDF {
             }
         $forms .='
             <tr>
-                <td colspan="4"></td>
-                <td colspan="3">(Temp. after measurement:____________)</td>
+                <td width="20"></td>
+                <td width="500" colspan="5" align="right">(Temp. after measurement:___________)</td>
             </tr>
         </table>
-        <table>    
+        <table>     
+            <tr>
+                <td width="250">Calibrated by: _______________________</td>
+            </tr>
+            <tr><td height="10"></td></tr>
+            <tr>
+                <td>Checked by: ________________________</td>
+            </tr>
+        </table>
+        <table>
+            <tr><td height="10"></td></tr>  
+            <tr>
+                <td width="85">Sample Code No.</td>
+                <td width="10">:</td>
+                <td width="115" class="underline">'.$sampleCode.'</td>
+            </tr>
+            <tr><td height="10"></td></tr>
+            <tr>
+        </table>
+        <table>
+            <tr>
+                <td width="20" height="15"></td>
+                <td width="500" colspan="5" align="right">(Temp. before measurement:___________)</td>
+            </tr>
+            <tr>
+                <td width="20"></td>
+                <td width="60" class="centerCell border" rowspan="2">Nominal Value, (mm)</td>
+                <td width="300" class="centerCell border" colspan="5">Error Reading,__________</td>
+                <td width="70" class="centerCell border" rowspan="2">Average<br>(mm)</td>
+                <td width="70" class="centerCell border" rowspan="2"><span style="font-size: 8px;">Error of Ref. Standards (mm)</span></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td class="centerCell border">1</td>
+                <td class="centerCell border">2</td>
+                <td class="centerCell border">3</td>
+                <td class="centerCell border">4</td>
+                <td class="centerCell border">5</td>
+            </tr>
+            ';
+            for($i=0;$i<48;$i++){
+                $forms .='
+                    <tr>    
+                        <td></td>
+                        <td class="border"></td>
+                        <td class="border"></td>
+                        <td class="border"></td>
+                        <td class="border"></td>
+                        <td class="border"></td>
+                        <td class="border"></td>
+                        <td class="border"></td>
+                        <td class="border"></td>
+                    </tr>
+                ';
+
+            }
+        $forms .='
+            <tr>
+                <td width="20"></td>
+                <td width="500" colspan="5" align="right">(Temp. after measurement:___________)</td>
+            </tr>
+        </table>
+        <table>     
             <tr>
                 <td width="250">Calibrated by: _______________________</td>
             </tr>

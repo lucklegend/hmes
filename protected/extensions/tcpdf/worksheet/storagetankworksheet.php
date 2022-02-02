@@ -111,7 +111,7 @@ class storagetankworksheet extends TCPDF {
             <tr>
                 <td width="110">Type of Job</td>
                 <td width="10">:</td>
-                <td width="410">[&nbsp;&nbsp;&nbsp;] Calibration &nbsp;&nbsp; [&nbsp;&nbsp;&nbsp;] Partial &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [&nbsp;&nbsp;&nbsp;] On-site Calibration</td>
+                <td width="420">[&nbsp;&nbsp;&nbsp;] Calibration &nbsp;&nbsp; [&nbsp;&nbsp;&nbsp;] Partial &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [&nbsp;&nbsp;&nbsp;] On-site Calibration&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [&nbsp;&nbsp;&nbsp;] Others</td>
             </tr>
         </table>
 
@@ -120,58 +120,66 @@ class storagetankworksheet extends TCPDF {
                 <td width="110">Equipment Description</td>
                 <td width="10">:</td>
                 <td width="150" class="underline">'.$sample->brand.'</td>
-                <td width="110">Service Request No.</td>
-                <td width="10">:</td>
-                <td width="150" class="underline">'.$request->requestRefNum.'</td>
+                <td width="110"></td>
+                <td width="10"></td>
+                <td width="150"></td>
             </tr>
             <tr>
                 <td>Manufacturer\'s Name</td>
                 <td>:</td>
                 <td class="underline">'.$sample->model_no.'</td>
-                <td>Sample Code No.</td>
+                <td>Service Request No.</td>
                 <td>:</td>
-                <td class="underline">'.$sampleCode.'</td>
+                <td class="underline">'.$request->requestRefNum.'</td>
             </tr>
             <tr>
                 <td>Serial No.</td>
                 <td>:</td>
                 <td class="underline">'.$sample->serial_no. '</td>
-                <td>Shell Thickness</td>
+                <td>Sample Code No.</td>
                 <td>:</td>
-                <td class="underline"></td>
+                <td class="underline">'.$sampleCode.'</td>
             </tr>
             <tr>
                 <td>Model No.</td>
                 <td>:</td>
                 <td class="underline">'.$sample->model_no. '</td>
-                <td colspan="3">Length of high end from tip of </td>
+                <td>Shell Thickness</td>
+                <td>:</td>
+                <td class="underline"></td>
             </tr>
             <tr>
                 <td>Product To Be Stored</td>
                 <td>:</td>
                 <td class="underline"></td>
-                <td>cylinder to slip gauge</td>
-                <td>:</td>
-                <td class="underline"></td>
+                <td colspan="3">Length of High End from Tip of </td>
             </tr>
             <tr>
                 <td>Barrel Type</td>
                 <td>:</td>
                 <td class="underline"></td>
-                <td>Tilt/Slope</td>
+                <td>Cylinder to Slip Gauge</td>
                 <td>:</td>
-                <td>X=__________   Y=__________</td>
+                <td class="underline"></td>
             </tr>
             <tr>
                 <td>Head Type</td>
                 <td>:</td>
                 <td class="underline"></td>
-                <td>Date Received</td>
+                <td>Tilt/Slope</td>
                 <td>:</td>
-                <td class="underline">'.$receiveDate. '</td>
+                <td width="170">X=__________ &nbsp;Y=___________</td>
             </tr>
             <tr>
                 <td>Gauge Type</td>
+                <td>:</td>
+                <td class="underline"></td>
+                <td>Date Received</td>
+                <td>:</td>
+                <td width="150" class="underline">'.$receiveDate. '</td>
+            </tr>
+            <tr>
+                <td>Range</td>
                 <td>:</td>
                 <td class="underline"></td>
                 <td>Date Calibrated</td>
@@ -179,7 +187,7 @@ class storagetankworksheet extends TCPDF {
                 <td class="underline"></td>
             </tr>
             <tr>
-                <td>Range</td>
+                <td>Resolution</td>
                 <td>:</td>
                 <td class="underline"></td>
                 <td>Ambient Temperature</td>
@@ -187,19 +195,12 @@ class storagetankworksheet extends TCPDF {
                 <td class="underline"></td>
             </tr>
             <tr>
-                <td>Resolution</td>
+                <td>Location of Calibration</td>
                 <td>:</td>
                 <td class="underline"></td>
                 <td>Relative Humidity</td>
                 <td>:</td>
                 <td class="underline"></td>
-            </tr>
-            <tr>
-                <td>Location of Calibration</td>
-                <td>:</td>
-                <td class="underline"></td>
-                <td colspan="3"></td>
-               
             </tr>
         </table>
         <table border="0">
@@ -531,6 +532,90 @@ class storagetankworksheet extends TCPDF {
         // Image($file, $x='', $y='', $w=0, $h=0, $type='', $link='', $align='', $resize=false, $dpi=300, $palign='', $ismask=false, $imgmask=false, $border=0, $fitbox=false, $hidden=false, $fitonpage=false)
         $this->Image($image_file, 8, 35, 195, '', 'JPEG', '', '', false, 300, '', false, false, 0, false, false, false);
         $this->SetAlpha(1);
+        $forms4 ='
+        <table>
+            <tr>
+                <td>CALIBRATION RESULTS:</td>
+            </tr>
+            <tr><td height="10"></td></tr>
+            <tr>
+                <td width="545" height="15">Outside Diameter: ___________ unit</td>
+            </tr>
+        </table>
+        <table border="0">
+            <tr>
+                <td width="20"></td>
+                <td width="85" class="border centerCell">Trial 1</td>
+                <td width="85" class="border centerCell">Trial 2</td>
+                <td width="85" class="border centerCell">Trial 3</td>
+                <td width="85" class="border centerCell">Trial 4</td>
+                <td width="85" class="border centerCell">Trial 5</td>
+                <td width="85" class="border centerCell">Mean Value</td>
+            </tr>
+            <tr>
+                <td height="20"></td>
+                <td class="border" ></td>
+                <td class="border"></td>
+                <td class="border"></td>
+                <td class="border"></td>
+                <td class="border"></td>
+                <td class="border"></td>
+            </tr>
+        </table>
+        <table>
+            <tr><td height="10"></td></tr>
+            <tr>
+                <td width="545" height="15">E1: ___________ unit</td>
+            </tr>
+        </table>
+        <table border="0">
+            <tr>
+                <td width="20"></td>
+                <td width="85" class="border centerCell">Trial 1</td>
+                <td width="85" class="border centerCell">Trial 2</td>
+                <td width="85" class="border centerCell">Trial 3</td>
+                <td width="85" class="border centerCell">Trial 4</td>
+                <td width="85" class="border centerCell">Trial 5</td>
+                <td width="85" class="border centerCell">Mean Value</td>
+            </tr>
+            <tr>
+                <td height="20"></td>
+                <td class="border" ></td>
+                <td class="border"></td>
+                <td class="border"></td>
+                <td class="border"></td>
+                <td class="border"></td>
+                <td class="border"></td>
+            </tr>
+        </table>
+        <table>
+            <tr><td height="10"></td></tr>
+            <tr>
+                <td width="545" height="15">E2: ___________ unit</td>
+            </tr>
+        </table>
+        <table border="0">
+            <tr>
+                <td width="20"></td>
+                <td width="85" class="border centerCell">Trial 1</td>
+                <td width="85" class="border centerCell">Trial 2</td>
+                <td width="85" class="border centerCell">Trial 3</td>
+                <td width="85" class="border centerCell">Trial 4</td>
+                <td width="85" class="border centerCell">Trial 5</td>
+                <td width="85" class="border centerCell">Mean Value</td>
+            </tr>
+            <tr>
+                <td height="20"></td>
+                <td class="border" ></td>
+                <td class="border"></td>
+                <td class="border"></td>
+                <td class="border"></td>
+                <td class="border"></td>
+                <td class="border"></td>
+            </tr>
+        </table>
+        ';
+        $this->MultiCell(190, 0, $style . $forms4, 0, 'L', 0, 1, 9, 130, true, 0, true, true, 0, 'T', false);
     }
 
     public function Footer() {

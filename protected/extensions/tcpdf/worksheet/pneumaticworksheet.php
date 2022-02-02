@@ -27,11 +27,11 @@ class pneumaticworksheet extends TCPDF {
         $this->SetAlpha(1);
 
         $headDetails = array(
-            'title'=>'PNEUMATIC PRESSURE TESTING OF PRESSURE VESSELS WORKSHEET',
+            'title'=>'TESTING WORKSHEET FOR PNEUMATIC PRESSURE TESTING OF PRESSURE VESSELS',
             'code'=>'HME-TM-002-F01',
         );
         // MultiCell($w, $h, $txt, $border=0, $align='J', $fill=0, $ln=1, $x='', $y='', $reseth=true, $stretch=0, $ishtml=false, $autopadding=true, $maxh=0)
-        $this->SetFont('helvetica','B',13);
+        $this->SetFont('helvetica','B',12);
         $this->MultiCell(120, 0, $headDetails['title'], 0, 'L', 0, 1, 82, 7, true, 0, true, true, 0, 'T', false);
         $this->SetFont('helvetica','',12);
         $this->MultiCell(120, 0, $headDetails['code'], 0, 'L', 0, 1, 82, 18, true, 0, true, true, 0, 'T', false);
@@ -93,7 +93,7 @@ class pneumaticworksheet extends TCPDF {
             <tr>
                 <td>Contact Information</td>
                 <td>:</td>
-                <td class="underline">'.$contactInformation. '</td>
+                <td class="underline">'.$contactInformation.'</td>
             </tr>
         </table>
         <table border="0">
@@ -103,6 +103,7 @@ class pneumaticworksheet extends TCPDF {
                 <td width="10">:</td>
                 <td width="415">[&nbsp;&nbsp;&nbsp;] Pneumatic Pressure Testing &nbsp;&nbsp;&nbsp; [&nbsp;&nbsp;&nbsp;] Other ____________________________________ </td>
             </tr>
+            <tr><td height="10"></td></tr>
             <tr>
                 <td width="110">Equipment Description</td>
                 <td width="10">:</td>
@@ -112,7 +113,7 @@ class pneumaticworksheet extends TCPDF {
                 <td width="145"></td>
             </tr>
             <tr>
-                <td>Manufacture/Brand: </td>
+                <td>Manufacturer\'s Name </td>
                 <td>:</td>
                 <td class="underline">'.$sample->brand.'</td>
                 <td>Service Request No.</td>
@@ -131,15 +132,15 @@ class pneumaticworksheet extends TCPDF {
                 <td>Serial No.</td>
                 <td>:</td>
                 <td class="underline">'.$sample->serial_no.'</td>
-                <td>Ambient Temperature </td>
+                <td>Date Received</td>
                 <td>:</td>
-                <td class="underline"></td>
+                <td class="underline">'.$receiveDate.'</td>
             </tr>
             <tr>
                 <td>Capacity</td>
                 <td>:</td>
                 <td class="underline">'.$sample->capacity_range.'</td>
-                <td>Relative Humidity</td>
+                <td>Date of Test Conducted</td>
                 <td>:</td>
                 <td class="underline"></td>
             </tr>
@@ -147,15 +148,15 @@ class pneumaticworksheet extends TCPDF {
                 <td>Pressure Vessel No.</td>
                 <td>:</td>
                 <td class="underline"></td>
-                <td>Date Received</td>
+                <td>Ambient Temperature </td>
                 <td>:</td>
-                <td class="underline">'.$receiveDate. '</td>
+                <td class="underline"></td>
             </tr>
             <tr>
                 <td>Location of Testing</td>
                 <td>:</td>
                 <td class="underline"></td>
-                <td>Date of Test Conducted</td>
+                <td>Relative Humidity</td>
                 <td>:</td>
                 <td class="underline"></td>
             </tr>
@@ -189,7 +190,7 @@ class pneumaticworksheet extends TCPDF {
                 <td>Calibration Date</td>
                 <td>:</td>
                 <td class="underline"></td>
-                <td>Manufacturer</td>
+                <td>Manufacturer/Brand</td>
                 <td>:</td>
                 <td class="underline"></td>
             </tr>

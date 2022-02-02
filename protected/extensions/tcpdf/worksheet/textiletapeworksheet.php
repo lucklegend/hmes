@@ -142,17 +142,17 @@ class textiletapeworksheet extends TCPDF {
                 <td class="underline">'.$receiveDate.'</td>
             </tr>
             <tr>
-                <td>Resolution</td>
+                <td>Range</td>
                 <td>:</td>
-                <td class="underline">'.$sample->resolution.'</td>
+                <td class="underline">'.$sample->capacity_range.'</td>
                 <td>Date Calibrated</td>
                 <td>:</td>
                 <td class="underline"></td>
             </tr>
             <tr>
-                <td>Range</td>
+                <td>Resolution</td>
                 <td>:</td>
-                <td class="underline">'.$sample->capacity_range.'</td>
+                <td class="underline">'.$sample->resolution.'</td>
                 <td>Ambient Temperature</td>
                 <td>:</td>
                 <td class="underline"></td>
@@ -173,7 +173,7 @@ class textiletapeworksheet extends TCPDF {
             </tr>
             <tr><td height="5"></td></tr>
             <tr>
-                <td width="540" style="text-align:justify;">The instrument was calibrated in accordance with HME-CM-301, “Calibration of Textile Tape Measure” based on Japan Industrial Standard, JIS 7522:1993.
+                <td width="540" style="text-align:justify;">The instrument was calibrated in accordance with HME-CM-301, “Calibration Method of Textile Tape Measure” based on Japan Industrial Standard, JIS 7522:1993.
                 </td>
             </tr>
             <tr><td height="10"></td></tr>
@@ -223,14 +223,14 @@ class textiletapeworksheet extends TCPDF {
             <tr>
                 <td width="20"></td>
                 <td width="110">Scale/Graduations</td>
-                <td width="155">[&nbsp;&nbsp;&nbsp;] readable</td>
-                <td width="255">[&nbsp;&nbsp;&nbsp;] unsatisfactory</td>
+                <td width="185">[&nbsp;&nbsp;&nbsp;] readable</td>
+                <td width="225">[&nbsp;&nbsp;&nbsp;] unsatisfactory</td>
             </tr>
             <tr>
                 <td></td>
                 <td>Missing / Broken parts</td>
+                <td>[&nbsp;&nbsp;&nbsp;] ______________________________</td>
                 <td>[&nbsp;&nbsp;&nbsp;] none</td>
-                <td>[&nbsp;&nbsp;&nbsp;] ________________________________</td>
             </tr>
             <tr style="height:5px;padding:0px;line-height:0px;"><td height="10" style="height:5px;"></td></tr>
             <tr>
@@ -245,8 +245,8 @@ class textiletapeworksheet extends TCPDF {
                 <td width="100" colspan="5">Tolerances of Length</td>
             </tr>
             <tr>
-                <td width="20"></td>
-                <td width="450" colspan="5">(Temp. before measurement:___________)</td>
+                <td width="20" height="15"></td>
+                <td width="500" colspan="5" align="right">(Temp. before measurement:___________)</td>
             </tr>
         </table>
         <table>
@@ -254,7 +254,7 @@ class textiletapeworksheet extends TCPDF {
                 <td width="20"></td>
                 <td width="60" class="centerCell border" rowspan="2">Nominal Value, (mm)</td>
                 <td width="300" class="centerCell border" colspan="5">Error Reading,__________</td>
-                <td width="70" class="centerCell border" rowspan="2">Average (mm)</td>
+                <td width="70" class="centerCell border" rowspan="2">Average<br>(mm)</td>
                 <td width="70" class="centerCell border" rowspan="2"><span style="font-size: 8px;">Error of Ref. Standards (mm)</span></td>
             </tr>
             <tr>
@@ -285,11 +285,10 @@ class textiletapeworksheet extends TCPDF {
         $forms .='
             <tr>
                 <td width="20"></td>
-                <td width="450" colspan="5">(Temp. after measurement:___________)</td>
+                <td width="500" colspan="5" align="right">(Temp. after measurement:___________)</td>
             </tr>
         </table>
-        <table>
-            <tr><td height="10"></td></tr>            
+        <table>     
             <tr>
                 <td width="250">Calibrated by: _______________________</td>
             </tr>
